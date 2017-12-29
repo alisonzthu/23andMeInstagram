@@ -7,7 +7,7 @@
     tools:context="com.example.macstudio.instagramalison.ui.MainActivity">
 
     <Button
-        android:id="@+id/btn_get_access_token"
+        android:id="@+id/btn_connect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/connect_to_api_txt"
