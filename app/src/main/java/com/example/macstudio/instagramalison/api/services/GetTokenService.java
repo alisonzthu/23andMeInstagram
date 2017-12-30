@@ -3,20 +3,17 @@ package com.example.macstudio.instagramalison.api.services;
 import com.example.macstudio.instagramalison.api.model.TokenResponse;
 
 import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.POST;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by macstudio on 12/30/17.
  */
 
 public interface GetTokenService {
-    @FormUrlEncoded
-    @POST("oauth/access_token")
-    Call<TokenResponse> getAccessToken(@Field("client_id") String client_id,
-                                       @Field("client_secret") String client_secret,
-                                       @Field("redirect_uri") String redirect_uri,
-                                       @Field("grant_type") String grant_type,
-                                       @Field("code") String code);
+    // add tag_name later!
+    @GET("v1/tags/{tag_name}/media/recent")
+    Call<TokenResponse> getAccessToken(@Path("tag_name") String tag_name,
+            @Query("access_token") String access_token);
 }

@@ -43,58 +43,11 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (auth_dialog.isShowing()) {
-            auth_dialog.dismiss();
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (auth_dialog.isShowing()) {
-            auth_dialog.dismiss();
-        }
-    }
-
-    @Override
-    public void onCodeReceived(String code) {
-        if (code != null) {
-            Log.d("received codesss: ", code);
-            auth_dialog.dismiss();
-            // POST request to get access_token
-            final Call<TokenResponse> accessToken = ServiceGenerator
-                    .createTokenService()
-                    .getAccessToken(ApplicationConsts.CLIENT_ID, ApplicationConsts.CLIENT_SECRET, ApplicationConsts.REDIRECT_URI,
-                            ApplicationConsts.GRANT_TYPE, code);
-            accessToken.enqueue(new Callback<TokenResponse>() {
-                @Override
-                public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
-                    Log.d("onResponse: ", "has response");
-                    Log.d("response code: ", response.code()+ "");
-                    if(response.isSuccessful()) {
-                        Log.d("success response", "yeah!");
-                        Toast.makeText(MainActivity.this, "successful!", Toast.LENGTH_SHORT).show();
-                        authToken = response.body().getAccess_token();
-                        Toast.makeText(MainActivity.this, "authToken: " + authToken, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Log.d("??????", "what?");
-                    }
-//                    if (response.body() != null) {
-//                        authToken = response.body().getAccess_token();
-//                        Log.d("body is not null: ", authToken);
-//                    } else {
-//                        Log.d("body is null", " so sad");
-//                    }
-                }
-
-                @Override
-                public void onFailure(Call<TokenResponse> call, Throwable t) {
-                    Log.d("fail response", "nooooo!");
-                    Toast.makeText(MainActivity.this, "Fail to get token response!", Toast.LENGTH_LONG).show();
-                }
-            });
+    public void onTokenReceived(String access_token) {
+        if (access_token != null) {
+            Toast.makeText(MainActivity.this, "hahaha", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(MainActivity.this, "nonono", Toast.LENGTH_LONG).show();
         }
     }
 
