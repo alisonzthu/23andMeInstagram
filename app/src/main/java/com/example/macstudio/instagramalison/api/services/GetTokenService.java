@@ -13,7 +13,7 @@ import retrofit2.http.POST;
 
 public interface GetTokenService {
     @FormUrlEncoded
-    @POST("/oauth/access_token")
+    @POST("oauth/access_token")
     Call<TokenResponse> getAccessToken(@Field("client_id") String client_id,
                                        @Field("client_secret") String client_secret,
                                        @Field("redirect_uri") String redirect_uri,

@@ -5,18 +5,27 @@ package com.example.macstudio.instagramalison.api.model;
  */
 
 public class TokenResponse {
-    private Data.User user;
+    //    private User user;
     private String access_token;
-
-    public Data.User getUser() {
-        return user;
-    }
-
-    public void setUser(Data.User user) {
-        this.user = user;
-    }
+    private String code;
 
     public String getAccess_token() {
         return access_token;
     }
+
+    public void setAccess_token(String access_token) {
+        this.access_token = access_token;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+//    public User getUser() {
+//        return user;
+//    }
 }

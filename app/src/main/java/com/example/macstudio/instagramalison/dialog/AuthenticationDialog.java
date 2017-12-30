@@ -38,7 +38,7 @@ public class AuthenticationDialog extends Dialog {
     private final String url = ApplicationConsts.BASE_URL
             + "oauth/authorize/?client_id=" + ApplicationConsts.CLIENT_ID
             + "&redirect_uri=" + ApplicationConsts.REDIRECT_URI
-            + "&response_type=code" + "&scope=public_content";
+            + "&response_type=code" + "&scope=basic";
 
     private static final float[] DIMENSIONS_LANDSCAPE = {460, 260};
     private static final float[] DIMENSIONS_PORTRAIT = {280, 420};

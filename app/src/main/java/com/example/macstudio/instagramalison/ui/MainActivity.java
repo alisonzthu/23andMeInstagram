@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.R;
@@ -15,10 +16,14 @@ import com.example.macstudio.instagramalison.dialog.AuthenticationDialog;
 import com.example.macstudio.instagramalison.listener.AuthenticationListener;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements AuthenticationListener{
     private AuthenticationDialog auth_dialog;
     private Button btn_connect;
+    private TextView failureText;
+    private String authToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +68,38 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
                     .createTokenService()
                     .getAccessToken(ApplicationConsts.CLIENT_ID, ApplicationConsts.CLIENT_SECRET, ApplicationConsts.REDIRECT_URI,
                             ApplicationConsts.GRANT_TYPE, code);
-            accessToken.enqueue();
+            accessToken.enqueue(new Callback<TokenResponse>() {
+                @Override
+                public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+                    Log.d("onResponse: ", "has response");
+                    Log.d("response code: ", response.code()+ "");
+                    if(response.isSuccessful()) {
+                        Log.d("success response", "yeah!");
+                        Toast.makeText(MainActivity.this, "successful!", Toast.LENGTH_SHORT).show();
+                        authToken = response.body().getAccess_token();
+                        Toast.makeText(MainActivity.this, "authToken: " + authToken, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.d("??????", "what?");
+                    }
+//                    if (response.body() != null) {
+//                        authToken = response.body().getAccess_token();
+//                        Log.d("body is not null: ", authToken);
+//                    } else {
+//                        Log.d("body is null", " so sad");
+//                    }
+                }
+
+                @Override
+                public void onFailure(Call<TokenResponse> call, Throwable t) {
+                    Log.d("fail response", "nooooo!");
+                    Toast.makeText(MainActivity.this, "Fail to get token response!", Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 
     @Override
     public void onError(String error) {
-        Toast.makeText(MainActivity.this, "Error message: " + error, Toast.LENGTH_SHORT);
+        Toast.makeText(MainActivity.this, "Error message: " + error, Toast.LENGTH_SHORT).show();
     }
 }
