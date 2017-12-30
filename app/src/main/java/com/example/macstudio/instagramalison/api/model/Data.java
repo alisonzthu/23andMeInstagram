@@ -18,8 +18,14 @@ public class Data {
     }
 
     public class User {
+        private String id;
         private String profile_picture;
+        private String username;
         private String full_name;
+
+        public String getId() { return id; }
+
+        public String getUsername() { return username; }
 
         public String getProfile_picture() {
             return profile_picture;

@@ -9,8 +9,12 @@ import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.R;
 import com.example.macstudio.instagramalison.api.ApplicationConsts;
+import com.example.macstudio.instagramalison.api.model.TokenResponse;
+import com.example.macstudio.instagramalison.api.services.ServiceGenerator;
 import com.example.macstudio.instagramalison.dialog.AuthenticationDialog;
 import com.example.macstudio.instagramalison.listener.AuthenticationListener;
+
+import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity implements AuthenticationListener{
     private AuthenticationDialog auth_dialog;
@@ -55,6 +59,11 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
             Log.d("received codesss: ", code);
             auth_dialog.dismiss();
             // POST request to get access_token
+            final Call<TokenResponse> accessToken = ServiceGenerator
+                    .createTokenService()
+                    .getAccessToken(ApplicationConsts.CLIENT_ID, ApplicationConsts.CLIENT_SECRET, ApplicationConsts.REDIRECT_URI,
+                            ApplicationConsts.GRANT_TYPE, code);
+            accessToken.enqueue();
         }
     }
 
