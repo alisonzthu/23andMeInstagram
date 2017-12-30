@@ -5,6 +5,6 @@ package com.example.macstudio.instagramalison.listener;
  */
 
 public interface AuthenticationListener {
-    public abstract void onComplete(String accessToken);
+    public abstract void onCodeReceived(String code);
     public abstract void onError(String error);
 }
