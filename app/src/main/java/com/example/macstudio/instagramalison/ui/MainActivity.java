@@ -1,5 +1,6 @@
 package com.example.macstudio.instagramalison.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,7 +47,11 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
     public void onTokenReceived(String access_token) {
         if (access_token != null) {
             Toast.makeText(MainActivity.this, "hahaha", Toast.LENGTH_LONG).show();
+            Intent feedIntent = new Intent(MainActivity.this, FeedActivity.class);
+            feedIntent.putExtra("access_token", access_token);
+            startActivity(feedIntent);
         } else {
+            auth_dialog.dismiss();
             Toast.makeText(MainActivity.this, "nonono", Toast.LENGTH_LONG).show();
         }
     }
