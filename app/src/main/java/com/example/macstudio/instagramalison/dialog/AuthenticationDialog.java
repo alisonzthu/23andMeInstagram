@@ -70,9 +70,15 @@ public class AuthenticationDialog extends Dialog {
         }
 
         @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            Log.d("onReceivedError", "errored");
+            Log.d("Error code", errorCode+"");
+        }
+
+        @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-//            spinner.dismiss();
+//            spinner.dismiss(); // keep or not keep the spinner feature?
             Log.d(TAG, "page finished, url: " + url);
             if(url.contains("#access_token=") && !authComplete) {
                 Uri uri = Uri.parse(url);

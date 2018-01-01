@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">InstagramAlison</string>
     <string name="connect_to_api_txt">Connect to Instagram</string>
+    <string name="feed_title">Your public contents</string>
 </resources>
