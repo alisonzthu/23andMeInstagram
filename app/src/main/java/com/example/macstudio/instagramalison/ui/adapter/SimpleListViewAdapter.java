@@ -34,5 +34,6 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
             currentView = vi.inflate(R.layout.list_item_pagination, null);
         }
         // next step: fill in fileds in list_item_pagination res file and find these views to add data
+        
     }
 }
