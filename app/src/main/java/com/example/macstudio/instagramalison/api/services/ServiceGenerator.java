@@ -15,6 +15,10 @@ public class ServiceGenerator {
         return getRetrofit().create(GetTokenService.class);
     }
 
+    public static GetFeedService createGetFeedService() {
+        return getRetrofit().create(GetFeedService.class);
+    }
+
     private static Retrofit getRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl(ApplicationConsts.BASE_URL)

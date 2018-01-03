@@ -5,8 +5,9 @@ package com.example.macstudio.instagramalison.api.model;
  */
 
 public class TokenResponse {
-    //    private User user;
+
     private String access_token;
+    // should I keep code and its getter and setter????
     private String code;
 
     public String getAccess_token() {
@@ -24,8 +25,4 @@ public class TokenResponse {
     public void setCode(String code) {
         this.code = code;
     }
-
-//    public User getUser() {
-//        return user;
-//    }
 }
