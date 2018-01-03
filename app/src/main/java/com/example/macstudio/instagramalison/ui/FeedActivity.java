@@ -60,5 +60,7 @@ public class FeedActivity extends AppCompatActivity {
             }
         });
         // when there's no data??
+
+        // do I need to call clearListView() anywhere?
     }
 }
