@@ -1,6 +1,7 @@
 package com.example.macstudio.instagramalison.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
@@ -15,13 +16,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.R;
+import com.example.macstudio.instagramalison.api.services.SharedPrefManager;
 import com.example.macstudio.instagramalison.dialog.AuthenticationDialog;
 import com.example.macstudio.instagramalison.listener.AuthenticationListener;
 
 public class MainActivity extends AppCompatActivity implements AuthenticationListener{
     private AuthenticationDialog auth_dialog;
     private Button btn_connect;
-    private String access_token = "";
 
 //    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -51,9 +52,10 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
     public void onTokenReceived(String access_token) {
         if (access_token != null) {
             Toast.makeText(MainActivity.this, "hahaha", Toast.LENGTH_LONG).show();
-            this.access_token = access_token;
+            // put the access_token into sharedPreferences
+            SharedPrefManager.getInstance(getApplicationContext())
+            .userLogin(access_token);
             Intent feedIntent = new Intent(MainActivity.this, FeedActivity.class);
-            feedIntent.putExtra("access_token", access_token);
             startActivity(feedIntent);
         } else {
             auth_dialog.dismiss();
@@ -79,11 +81,11 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
         switch(item.getItemId()) {
             case R.id.action_settings:
                 Toast.makeText(MainActivity.this, "action_settings", Toast.LENGTH_LONG).show();
-
-                if (this.access_token != "") {
+                if (SharedPrefManager.getInstance(this).isLoggedIn()) {
                     // this should be how to log user out
-                    this.access_token = "";
-                    // this won't work for now because I can't get the access_token from api
+                    SharedPrefManager.getInstance(this).logout();
+                    // this won't work for now, because I can't get the access_token from api
+                    // this link may help: https://stackoverflow.com/questions/42890528/how-to-hide-menu-item-in-android-action-bar
                     item.setVisible(false);
                 }
                 break;

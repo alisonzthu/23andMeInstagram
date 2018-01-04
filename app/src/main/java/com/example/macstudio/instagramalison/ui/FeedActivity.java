@@ -12,6 +12,7 @@ import com.example.macstudio.instagramalison.R;
 import com.example.macstudio.instagramalison.api.model.InstagramData;
 import com.example.macstudio.instagramalison.api.model.InstagramResponse;
 import com.example.macstudio.instagramalison.api.services.ServiceGenerator;
+import com.example.macstudio.instagramalison.api.services.SharedPrefManager;
 import com.example.macstudio.instagramalison.ui.adapter.SimpleListViewAdapter;
 
 import java.util.ArrayList;
@@ -79,8 +80,18 @@ public class FeedActivity extends AppCompatActivity {
 
         switch(item.getItemId()) {
             case R.id.action_settings:
-                //your action
                 Toast.makeText(FeedActivity.this, "action_settings", Toast.LENGTH_LONG).show();
+
+                if (this.access_token != "") {
+                    // this should be how to log user out
+                    this.access_token = "";
+                    // this won't work for now because I can't get the access_token from api
+                    item.setVisible(false);
+                    // now send the user back to MainActivity:
+                    SharedPrefManager.getInstance(this).logout();
+                    finish();
+                    startActivity(new Intent(this, MainActivity.class));
+                }
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -88,4 +99,5 @@ public class FeedActivity extends AppCompatActivity {
 
         return true;
     }
+
 }
