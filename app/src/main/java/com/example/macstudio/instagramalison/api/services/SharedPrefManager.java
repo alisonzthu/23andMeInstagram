@@ -11,7 +11,7 @@ public class SharedPrefManager {
 
     private static SharedPrefManager managerInstance;
     private static Context context;
-    private static final String SHARED_PREFERENCE_NAME = "myPref1";
+    public static final String SHARED_PREFERENCE_NAME = "myPref1";
     // are KEY_USERNAME and KEY_USERID necessary?
     private static final String KEY_USERNAME = "username";
     private static final String KEY_USERID = "userId";

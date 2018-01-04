@@ -1,8 +1,11 @@
 package com.example.macstudio.instagramalison.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -34,7 +37,9 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
 
         Intent intent = getIntent();
-        access_token =  intent.getStringExtra("access_token");
+        SharedPreferences sharedPreferences= getApplicationContext().getSharedPreferences(SharedPrefManager.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        access_token = sharedPreferences.getString("access_token", "");
+        Log.d("access_token now is", access_token);
 
         feedListView = findViewById(R.id.feed_list);
 
