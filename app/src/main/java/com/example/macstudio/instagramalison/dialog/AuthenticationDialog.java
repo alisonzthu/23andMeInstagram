@@ -32,7 +32,7 @@ public class AuthenticationDialog extends Dialog {
     private final String url = ApplicationConsts.BASE_URL
             + "oauth/authorize/?client_id=" + ApplicationConsts.CLIENT_ID
             + "&redirect_uri=" + ApplicationConsts.REDIRECT_URI
-            + "&response_type=token&scope=public_content";
+            + "&response_type=token&scope=public_content+likes";
 
 
     public AuthenticationDialog(@NonNull Context context, AuthenticationListener listener) {

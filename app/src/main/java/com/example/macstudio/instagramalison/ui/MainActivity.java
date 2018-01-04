@@ -21,6 +21,7 @@ import com.example.macstudio.instagramalison.listener.AuthenticationListener;
 public class MainActivity extends AppCompatActivity implements AuthenticationListener{
     private AuthenticationDialog auth_dialog;
     private Button btn_connect;
+    private String access_token = "";
 
 //    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
     public void onTokenReceived(String access_token) {
         if (access_token != null) {
             Toast.makeText(MainActivity.this, "hahaha", Toast.LENGTH_LONG).show();
+            this.access_token = access_token;
             Intent feedIntent = new Intent(MainActivity.this, FeedActivity.class);
             feedIntent.putExtra("access_token", access_token);
             startActivity(feedIntent);
@@ -76,8 +78,14 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
 
         switch(item.getItemId()) {
             case R.id.action_settings:
-                //your action
                 Toast.makeText(MainActivity.this, "action_settings", Toast.LENGTH_LONG).show();
+
+                if (this.access_token != "") {
+                    // this should be how to log user out
+                    this.access_token = "";
+                    // this won't work for now because I can't get the access_token from api
+                    item.setVisible(false);
+                }
                 break;
             default:
                 return super.onOptionsItemSelected(item);
