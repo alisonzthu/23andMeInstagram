@@ -15,6 +15,10 @@ public class ServiceGenerator {
         return getRetrofit().create(GetTokenService.class);
     }
 
+    public static GetUserDataService createUserDataService() {
+        return getRetrofit().create(GetUserDataService.class);
+    }
+
     public static GetFeedService createGetFeedService() {
         return getRetrofit().create(GetFeedService.class);
     }

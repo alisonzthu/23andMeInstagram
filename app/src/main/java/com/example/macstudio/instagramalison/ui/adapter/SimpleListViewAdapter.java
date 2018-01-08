@@ -33,6 +33,7 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        final String IMAGE_ID = data.get(position).getId();
         View currentView = convertView;
         if (currentView == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -60,7 +61,7 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         like_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Log.d("like button clicked", "haha");
+                Log.d("like button clicked", IMAGE_ID);
                 // check the status of like button
                 // if not liked, send POST
                 // if liked, send DELETE

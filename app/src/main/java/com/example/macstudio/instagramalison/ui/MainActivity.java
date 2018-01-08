@@ -12,8 +12,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.R;
+import com.example.macstudio.instagramalison.api.model.InstaUserResponse;
+import com.example.macstudio.instagramalison.api.services.ServiceGenerator;
 import com.example.macstudio.instagramalison.api.services.SharedPrefManager;
 import com.example.macstudio.instagramalison.listener.AuthenticationListener;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements AuthenticationListener{
     private AuthenticationDialog auth_dialog;
@@ -65,6 +71,25 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
             // put the access_token into sharedPreferences
             SharedPrefManager.getInstance(getApplicationContext())
             .userLogin(access_token);
+            // put user id into sharedPreferences:
+            Call<InstaUserResponse> call = ServiceGenerator.createUserDataService().getUserProfile(access_token);
+            call.enqueue(new Callback<InstaUserResponse>() {
+                @Override
+                public void onResponse(Call<InstaUserResponse> call, Response<InstaUserResponse> response) {
+
+                    try {
+                        Log.d("response on user data", response.body().getUser() +"");
+                        Log.d("response on user data", response.body().getUser().getId());
+                    } catch(NullPointerException e) {
+                        Log.d("no", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<InstaUserResponse> call, Throwable t) {
+                    Log.e("Errored", "in getting user data");
+                }
+            });
             Intent feedIntent = new Intent(MainActivity.this, FeedActivity.class);
             startActivity(feedIntent);
         } else {

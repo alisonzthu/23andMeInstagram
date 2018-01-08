@@ -11,6 +11,8 @@ import retrofit2.http.Query;
  * Created by macstudio on 12/30/17.
  */
 
+
+// 01/08/18, I don't think this interface is useful
 public interface GetTokenService {
     // add tag_name later!
     @GET("v1/tags/{tag_name}/media/recent")
