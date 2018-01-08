@@ -67,21 +67,20 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
     @Override
     public void onTokenReceived(String access_token) {
         if (access_token != null) {
+            final String ACCESS_TOKEN = access_token;
             Toast.makeText(MainActivity.this, "hahaha", Toast.LENGTH_LONG).show();
             // put the access_token into sharedPreferences
-            SharedPrefManager.getInstance(getApplicationContext())
-            .userLogin(access_token);
+
             // put user id into sharedPreferences:
             Call<InstaUserResponse> call = ServiceGenerator.createUserDataService().getUserProfile(access_token);
             call.enqueue(new Callback<InstaUserResponse>() {
                 @Override
                 public void onResponse(Call<InstaUserResponse> call, Response<InstaUserResponse> response) {
 
-                    try {
-                        Log.d("response on user data", response.body().getUser() +"");
-                        Log.d("response on user data", response.body().getUser().getId());
-                    } catch(NullPointerException e) {
-                        Log.d("no", e.getMessage());
+                    if (response.body() != null && response.body().getData() != null) {
+                        Log.d("not null case", response.body().getData().getId());
+                        SharedPrefManager.getInstance(getApplicationContext())
+                                .userLogin(ACCESS_TOKEN, response.body().getData().getId());
                     }
                 }
 

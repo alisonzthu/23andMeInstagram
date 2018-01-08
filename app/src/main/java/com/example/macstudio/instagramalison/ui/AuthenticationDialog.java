@@ -57,9 +57,9 @@ public class AuthenticationDialog extends Dialog {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setBuiltInZoomControls(true);
         // change the location of this line will make the code work. weird!!!
         webView.loadUrl(url);
-        webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setPluginState(WebSettings.PluginState.ON);
 
     }

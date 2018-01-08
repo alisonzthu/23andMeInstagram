@@ -5,13 +5,13 @@ package com.example.macstudio.instagramalison.api.model;
  */
 
 public class InstaUserResponse {
-    private InstaUser user;
+    private InstaUser data;
 
-    public InstaUser getUser() {
-        return user;
+    public InstaUser getData() {
+        return data;
     }
 
-    public void setUser(InstaUser user) {
-        this.user = user;
+    public void setUser(InstaUser data) {
+        this.data = data;
     }
 }

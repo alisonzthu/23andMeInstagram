@@ -29,11 +29,12 @@ public class SharedPrefManager {
         return managerInstance;
     }
 
-    public boolean userLogin(String access_token) {
+    public boolean userLogin(String access_token, String user_id) {
         // MODE_PRIVATE means only this app can access this SharedPrefernce
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_ACCESS_TOKEN, access_token);
+        editor.putString(KEY_USERID, user_id);
         // apply() is asynchronou and commit() is synchronous.
         // One shouldn't call commit() from the UI thread
         editor.apply();
