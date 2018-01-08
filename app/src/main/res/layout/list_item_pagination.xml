@@ -32,4 +32,11 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/feed_photo_padding"
         app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <com.like.LikeButton
+        app:icon_type="heart"
+        app:icon_size="25dp"
+        android:id="@+id/star_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

@@ -55,12 +55,11 @@ public class AuthenticationDialog extends Dialog {
         webView.clearHistory();
         webView.clearView();
 
-//        webView.reload();
         webView.setWebViewClient(new AuthWebViewClient());
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
-        // change the location of this line will make the code work. wierd!!!
+        // change the location of this line will make the code work. weird!!!
         webView.loadUrl(url);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setBuiltInZoomControls(true);
