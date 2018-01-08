@@ -1,4 +1,4 @@
-package com.example.macstudio.instagramalison.dialog;
+package com.example.macstudio.instagramalison.ui;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,14 +10,11 @@ import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.R;
 import com.example.macstudio.instagramalison.api.ApplicationConsts;
 import com.example.macstudio.instagramalison.listener.AuthenticationListener;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by macstudio on 12/18/17.
@@ -86,7 +83,6 @@ public class AuthenticationDialog extends Dialog {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-//            spinner.dismiss(); // keep or not keep the spinner feature?
             Log.d(TAG, "page finished, url: " + url);
             if(url.contains("#access_token=") && !authComplete) {
                 Uri uri = Uri.parse(url);

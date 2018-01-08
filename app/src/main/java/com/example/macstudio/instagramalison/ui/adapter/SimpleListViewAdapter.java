@@ -2,6 +2,7 @@ package com.example.macstudio.instagramalison.ui.adapter;
 
 import android.content.Context;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.macstudio.instagramalison.api.model.InstagramData;
 import com.example.macstudio.instagramalison.R;
+import com.like.LikeButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -52,6 +54,18 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         Picasso.with(context)
                 .load(data.get(position).getImages().getStandard_resolution().getUrl())
                 .into(feed_photo);
+
+        // get the like button and set eventListener on it
+        LikeButton like_button = (LikeButton) currentView.findViewById(R.id.like_button);
+        like_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Log.d("like button clicked", "haha");
+                // check the status of like button
+                // if not liked, send POST
+                // if liked, send DELETE
+            }
+        });
         return currentView;
     }
 

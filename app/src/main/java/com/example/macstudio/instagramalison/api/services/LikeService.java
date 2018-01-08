@@ -24,4 +24,6 @@ public interface LikeService {
 
     @DELETE("v1/media/{media-id}/likes")
     Call<MediaLikeResponse> deleteLikeMedia();
+
+    //should finish the post and delete methods, then complete the MediaLikeResponse class
 }

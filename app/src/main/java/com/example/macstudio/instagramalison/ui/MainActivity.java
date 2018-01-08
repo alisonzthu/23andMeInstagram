@@ -1,10 +1,6 @@
 package com.example.macstudio.instagramalison.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,13 +8,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.R;
 import com.example.macstudio.instagramalison.api.services.SharedPrefManager;
-import com.example.macstudio.instagramalison.dialog.AuthenticationDialog;
 import com.example.macstudio.instagramalison.listener.AuthenticationListener;
 
 public class MainActivity extends AppCompatActivity implements AuthenticationListener{
@@ -60,9 +54,6 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
             // this should be how to log user out
             SharedPrefManager.getInstance(this).logout();
             Log.d("user is logged in", SharedPrefManager.getInstance(this).isLoggedIn() + "");
-            // this won't work for now, because I can't get the access_token from api
-            // this link may help: https://stackoverflow.com/questions/42890528/how-to-hide-menu-item-in-android-action-bar
-//            item.setVisible(false);
         }
 
     }
