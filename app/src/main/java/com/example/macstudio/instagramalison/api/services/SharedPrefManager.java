@@ -13,7 +13,7 @@ public class SharedPrefManager {
     private static SharedPrefManager managerInstance;
     private static Context context;
     public static final String SHARED_PREFERENCE_NAME = "myPref1";
-    // are KEY_USERNAME and KEY_USERID necessary?
+    // is KEY_USERNAME necessary?
     private static final String KEY_USERNAME = "username";
     private static final String KEY_USERID = "userId";
     private static final String KEY_ACCESS_TOKEN = "access_token";

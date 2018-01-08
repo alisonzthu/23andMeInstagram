@@ -69,9 +69,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
         if (access_token != null) {
             final String ACCESS_TOKEN = access_token;
             Toast.makeText(MainActivity.this, "hahaha", Toast.LENGTH_LONG).show();
-            // put the access_token into sharedPreferences
 
-            // put user id into sharedPreferences:
             Call<InstaUserResponse> call = ServiceGenerator.createUserDataService().getUserProfile(access_token);
             call.enqueue(new Callback<InstaUserResponse>() {
                 @Override
@@ -79,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
 
                     if (response.body() != null && response.body().getData() != null) {
                         Log.d("not null case", response.body().getData().getId());
+                        // put both access_token and user_id into SharedPreferences
                         SharedPrefManager.getInstance(getApplicationContext())
                                 .userLogin(ACCESS_TOKEN, response.body().getData().getId());
                     }
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
 
                 @Override
                 public void onFailure(Call<InstaUserResponse> call, Throwable t) {
-                    Log.e("Errored", "in getting user data");
+                    Log.e("Erred", "in getting user data");
                 }
             });
             Intent feedIntent = new Intent(MainActivity.this, FeedActivity.class);
