@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -48,19 +50,19 @@ public class AuthenticationDialog extends Dialog {
 
     private void setUpWebView() {
         webView = findViewById(R.id.web_view);
-        webView.clearCache(true);
-        webView.clearHistory();
-        webView.clearView();
+//        webView.clearCache(true);
+//        webView.clearHistory();
+//        webView.clearView();
 
         webView.setWebViewClient(new AuthWebViewClient());
 
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setBuiltInZoomControls(true);
+//        webView.getSettings().setLoadWithOverviewMode(true);
+//        webView.getSettings().setUseWideViewPort(true);
+//        webView.getSettings().setBuiltInZoomControls(true);
         // change the location of this line will make the code work. weird!!!
         webView.loadUrl(url);
-        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
+//        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
 
     }
 
@@ -75,9 +77,15 @@ public class AuthenticationDialog extends Dialog {
         }
 
         @Override
+        public void onReceivedError(WebView webView, WebResourceRequest request, WebResourceError error) {
+            Log.d(TAG, "first onReceived Error");
+
+        }
+
+        @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            Log.d("onReceivedError", "errored");
-            Log.d("Error message", description);
+            Log.d(TAG, "errored");
+            Log.d(TAG, description);
         }
 
         @Override

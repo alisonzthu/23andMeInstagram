@@ -43,6 +43,7 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         ImageView avatar = currentView.findViewById(R.id.avatar);
         TextView user_fullname = currentView.findViewById(R.id.user_fullname);
         ImageView feed_photo = currentView.findViewById(R.id.feed_photo);
+        TextView like_count = currentView.findViewById(R.id.like_count);
 
         Picasso.with(context)
                 .load(data.get(position).getUser().getProfile_picture())
@@ -55,6 +56,8 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         Picasso.with(context)
                 .load(data.get(position).getImages().getStandard_resolution().getUrl())
                 .into(feed_photo);
+// needs to be fixed. currently shows a string of things
+//        like_count.setText(data.get(position).getLikes()+"");
 
         // get the like button and set eventListener on it
         LikeButton like_button = (LikeButton) currentView.findViewById(R.id.like_button);

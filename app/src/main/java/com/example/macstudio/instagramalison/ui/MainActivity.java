@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
                 auth_dialog.show();
             }
         });
+        Toast.makeText(MainActivity.this, "haha", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
     @Override
     public void onTokenReceived(String access_token) {
         if (access_token != null) {
+            Log.d("dd", "d");
             final String ACCESS_TOKEN = access_token;
             Toast.makeText(MainActivity.this, "hahaha", Toast.LENGTH_LONG).show();
 

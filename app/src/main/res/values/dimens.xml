@@ -3,4 +3,5 @@
     <dimen name="feed_title_padding">10dp</dimen>
     <dimen name="feed_photo_padding">20dp</dimen>
     <dimen name="elevation_demanded_by_material_design">4dp</dimen>
+    <dimen name="like_label_top_padding">30dp</dimen>
 </resources>
