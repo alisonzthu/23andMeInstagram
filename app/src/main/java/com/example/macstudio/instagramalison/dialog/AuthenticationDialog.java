@@ -10,6 +10,7 @@ import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.R;
@@ -50,8 +51,13 @@ public class AuthenticationDialog extends Dialog {
 
     private void setUpWebView() {
         webView = findViewById(R.id.web_view);
+        webView.clearCache(true);
+        webView.clearHistory();
+        webView.clearView();
         webView.loadUrl(url);
+//        webView.reload();
         webView.setWebViewClient(new AuthWebViewClient());
+
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
@@ -72,7 +78,7 @@ public class AuthenticationDialog extends Dialog {
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             Log.d("onReceivedError", "errored");
-            Log.d("Error code", errorCode+"");
+            Log.d("Error message", description);
         }
 
         @Override

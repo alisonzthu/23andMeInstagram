@@ -2,6 +2,7 @@ package com.example.macstudio.instagramalison.api.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /**
  * Created by macstudio on 1/4/18.
@@ -54,6 +55,7 @@ public class SharedPrefManager {
         editor.clear();
 
         editor.apply();
+        Log.d("logging out", "successful");
         return true;
     }
 

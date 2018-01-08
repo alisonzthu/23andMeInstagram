@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/feed_title_padding"
         android:orientation="horizontal">
 
         <ImageView
@@ -21,14 +22,14 @@
             android:id="@+id/user_fullname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/feed_title_padding"
             android:text="Test_test" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/feed_photo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:padding="@dimen/feed_photo_padding"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/feed_photo_padding"
         app:srcCompat="@mipmap/ic_launcher_round" />
 </LinearLayout>

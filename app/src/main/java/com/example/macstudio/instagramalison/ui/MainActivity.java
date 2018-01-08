@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d("from onCreate", SharedPrefManager.getInstance(this).isLoggedIn() + "");
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -46,6 +48,23 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
                 auth_dialog.show();
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+
+        super.onDestroy();
+        // destroy sharedpreferences:
+        if (SharedPrefManager.getInstance(this).isLoggedIn()) {
+            Log.d("user is logged in", SharedPrefManager.getInstance(this).isLoggedIn() + "");
+            // this should be how to log user out
+            SharedPrefManager.getInstance(this).logout();
+            Log.d("user is logged in", SharedPrefManager.getInstance(this).isLoggedIn() + "");
+            // this won't work for now, because I can't get the access_token from api
+            // this link may help: https://stackoverflow.com/questions/42890528/how-to-hide-menu-item-in-android-action-bar
+//            item.setVisible(false);
+        }
+
     }
 
     @Override
@@ -79,8 +98,8 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()) {
-            case R.id.action_settings:
-                Toast.makeText(MainActivity.this, "action_settings", Toast.LENGTH_LONG).show();
+            case R.id.action_logout:
+                Toast.makeText(MainActivity.this, "action_logout", Toast.LENGTH_LONG).show();
                 if (SharedPrefManager.getInstance(this).isLoggedIn()) {
                     // this should be how to log user out
                     SharedPrefManager.getInstance(this).logout();
