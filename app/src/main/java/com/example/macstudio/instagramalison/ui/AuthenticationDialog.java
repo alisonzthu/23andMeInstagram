@@ -9,13 +9,12 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.R;
-import com.example.macstudio.instagramalison.api.ApplicationConsts;
+import com.example.macstudio.instagramalison.api.AppConstants;
 import com.example.macstudio.instagramalison.listener.AuthenticationListener;
 
 /**
@@ -29,9 +28,9 @@ public class AuthenticationDialog extends Dialog {
     private WebView webView;
     private Context context;
 
-    private final String url = ApplicationConsts.BASE_URL
-            + "oauth/authorize/?client_id=" + ApplicationConsts.CLIENT_ID
-            + "&redirect_uri=" + ApplicationConsts.REDIRECT_URI
+    private final String url = AppConstants.BASE_URL
+            + "oauth/authorize/?client_id=" + AppConstants.CLIENT_ID
+            + "&redirect_uri=" + AppConstants.REDIRECT_URI
             + "&response_type=token&scope=public_content+likes";
 
 

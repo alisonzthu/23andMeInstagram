@@ -1,6 +1,6 @@
 package com.example.macstudio.instagramalison.api.services;
 
-import com.example.macstudio.instagramalison.api.ApplicationConsts;
+import com.example.macstudio.instagramalison.api.AppConstants;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,7 +25,7 @@ public class ServiceGenerator {
 
     private static Retrofit getRetrofit() {
         return new Retrofit.Builder()
-                .baseUrl(ApplicationConsts.BASE_URL)
+                .baseUrl(AppConstants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
