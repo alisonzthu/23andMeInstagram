@@ -11,10 +11,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-    public static GetTokenService createTokenService() {
-        return getRetrofit().create(GetTokenService.class);
-    }
-
     public static GetUserDataService createUserDataService() {
         return getRetrofit().create(GetUserDataService.class);
     }
