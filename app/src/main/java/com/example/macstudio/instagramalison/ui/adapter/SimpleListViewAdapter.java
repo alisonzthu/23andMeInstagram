@@ -56,7 +56,7 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         Picasso.with(context)
                 .load(data.get(position).getImages().getStandard_resolution().getUrl())
                 .into(feed_photo);
-// needs to be fixed. currently shows a string of things
+// ==============needs to be fixed. currently shows a string of things
 //        like_count.setText(data.get(position).getLikes()+"");
 
         // get the like button and set eventListener on it

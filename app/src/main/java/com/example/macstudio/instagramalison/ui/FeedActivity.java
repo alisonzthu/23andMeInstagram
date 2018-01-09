@@ -40,7 +40,7 @@ public class FeedActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        Intent intent = getIntent();
+        Intent intent = getIntent();  // is this line useful?
         SharedPreferences sharedPreferences= getApplicationContext().getSharedPreferences(SharedPrefManager.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
         access_token = sharedPreferences.getString("access_token", "");
         Log.d("access_token now is", access_token);
@@ -61,6 +61,7 @@ public class FeedActivity extends AppCompatActivity {
                 if (response.body() != null) {
                     for (int i = 0; i < response.body().getData().length; i++) {
                         data.add(response.body().getData()[i]);
+                        // I think I should try getting like data from here
                     }
 
                     listViewAdapter.notifyDataSetChanged();
@@ -105,8 +106,6 @@ public class FeedActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-
         return true;
     }
-
 }
