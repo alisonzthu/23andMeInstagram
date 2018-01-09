@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
     private AuthenticationDialog auth_dialog;
     private Button btn_connect;
 
-//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +47,8 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
                 auth_dialog.show();
             }
         });
-        Toast.makeText(MainActivity.this, "haha", Toast.LENGTH_SHORT).show();
     }
-
+// do I need onDestroy???
     @Override
     public void onDestroy() {
 

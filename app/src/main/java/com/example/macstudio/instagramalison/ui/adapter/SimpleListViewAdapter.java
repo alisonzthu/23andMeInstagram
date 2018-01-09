@@ -80,7 +80,7 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         // get the like button and set eventListener on it
         like_button.setOnLikeListener(new OnLikeListener(){
             @Override
-            public void liked(LikeButton likeButton) {
+            public void liked(final LikeButton likeButton) {
                 Log.d("making like request", likeButton.isLiked()+"");
                 // make POST request
                 Call<SelfLikeMediaResponse> call = ServiceGenerator.createLikeService().postLikeMedia(MEDIA_ID, access_token);
@@ -93,13 +93,14 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
                     @Override
                     public void onFailure(Call<SelfLikeMediaResponse> call, Throwable t) {
                         Log.e("post failed", t.getMessage());
+                        likeButton.setLiked(false);
                         Toast.makeText(getContext(), "Failed to like", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
             @Override
-            public void unLiked(LikeButton likeButton) {
+            public void unLiked(final LikeButton likeButton) {
                 Log.d("making unlike request", likeButton.isLiked()+"");
                 // make DELETE request
                 Call<SelfLikeMediaResponse> call = ServiceGenerator.createLikeService().deleteLikeMedia(MEDIA_ID, access_token);
@@ -112,6 +113,7 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
                     @Override
                     public void onFailure(Call<SelfLikeMediaResponse> call, Throwable t) {
                         Log.e("delete failed", t.getMessage());
+                        likeButton.setLiked(true);
                         Toast.makeText(getContext(), "Failed to unlike", Toast.LENGTH_SHORT).show();
                     }
                 });
