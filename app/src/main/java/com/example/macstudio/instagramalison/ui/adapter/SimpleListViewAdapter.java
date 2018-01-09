@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.macstudio.instagramalison.api.model.InstagramData;
 import com.example.macstudio.instagramalison.R;
+import com.example.macstudio.instagramalison.api.model.InstagramResponse;
 import com.example.macstudio.instagramalison.api.model.SelfLikeMediaResponse;
 import com.example.macstudio.instagramalison.api.services.ServiceGenerator;
 import com.example.macstudio.instagramalison.api.services.SharedPrefManager;
@@ -34,6 +35,7 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
     private ArrayList<InstagramData> data;
     private static String access_token = null;
 
+
     public SimpleListViewAdapter(Context context, int textViewResourceId, ArrayList<InstagramData> dataObjects){
         super(context, textViewResourceId, dataObjects);
         this.context = context;
@@ -45,7 +47,7 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final String IMAGE_ID = data.get(position).getId();
+        final String MEDIA_ID = data.get(position).getId();
         View currentView = convertView;
         if (currentView == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -78,14 +80,38 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         like_button.setOnLikeListener(new OnLikeListener(){
             @Override
             public void liked(LikeButton likeButton) {
-                Log.d("like status", likeButton.isLiked()+"");
+                Log.d("making like request", likeButton.isLiked()+"");
                 // make POST request
+                Call<SelfLikeMediaResponse> call = ServiceGenerator.createLikeService().postLikeMedia(MEDIA_ID, access_token);
+                call.enqueue(new Callback<SelfLikeMediaResponse>() {
+                    @Override
+                    public void onResponse(Call<SelfLikeMediaResponse> call, Response<SelfLikeMediaResponse> response) {
+                        Log.d("post", "successful");
+                    }
+
+                    @Override
+                    public void onFailure(Call<SelfLikeMediaResponse> call, Throwable t) {
+                        Log.e("post", "failed");
+                    }
+                });
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
-                Log.d("like status", likeButton.isLiked()+"");
+                Log.d("making unlike request", likeButton.isLiked()+"");
                 // make DELETE request
+                Call<SelfLikeMediaResponse> call = ServiceGenerator.createLikeService().deleteLikeMedia(MEDIA_ID, access_token);
+                call.enqueue(new Callback<SelfLikeMediaResponse>() {
+                    @Override
+                    public void onResponse(Call<SelfLikeMediaResponse> call, Response<SelfLikeMediaResponse> response) {
+                        Log.d("delete", "successful");
+                    }
+
+                    @Override
+                    public void onFailure(Call<SelfLikeMediaResponse> call, Throwable t) {
+                        Log.d("delete", "failed");
+                    }
+                });
             }
         });
         return currentView;

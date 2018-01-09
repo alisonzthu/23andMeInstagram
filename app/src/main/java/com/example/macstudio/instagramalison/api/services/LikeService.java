@@ -4,7 +4,8 @@ import com.example.macstudio.instagramalison.api.model.SelfLikeMediaResponse;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
-import retrofit2.http.GET;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -14,15 +15,14 @@ import retrofit2.http.Query;
  */
 
 public interface LikeService {
-    @GET("v1/media/{media-id}/likes")
-    Call<SelfLikeMediaResponse> getMediaLikes(@Path("media-id") String mediaId,
-                                              @Query("access_token") String access_token);
 
+    @FormUrlEncoded
     @POST("v1/media/{media-id}/likes")
-    Call<SelfLikeMediaResponse> postLikeMedia();
+    Call<SelfLikeMediaResponse> postLikeMedia(@Path("media-id") String media_id,
+                                              @Field("access_token") String access_token);
 
     @DELETE("v1/media/{media-id}/likes")
-    Call<SelfLikeMediaResponse> deleteLikeMedia();
+    Call<SelfLikeMediaResponse> deleteLikeMedia(@Path("media-id") String media_id,
+                                                @Query("access_token") String access_token);
 
-    //should finish the post and delete methods, then complete the SelfLikeMediaResponse class
 }
