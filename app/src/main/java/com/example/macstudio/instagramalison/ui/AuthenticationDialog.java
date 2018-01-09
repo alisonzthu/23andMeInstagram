@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.webkit.CookieManager;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -56,9 +57,11 @@ public class AuthenticationDialog extends Dialog {
         webView.setWebViewClient(new AuthWebViewClient());
 
         webView.getSettings().setJavaScriptEnabled(true);
+        // what are these functions doing????!!!
 //        webView.getSettings().setLoadWithOverviewMode(true);
 //        webView.getSettings().setUseWideViewPort(true);
 //        webView.getSettings().setBuiltInZoomControls(true);
+        CookieManager.getInstance().setAcceptCookie(true);
         // change the location of this line will make the code work. weird!!!
         webView.loadUrl(url);
 //        webView.getSettings().setPluginState(WebSettings.PluginState.ON);

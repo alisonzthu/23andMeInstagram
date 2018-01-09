@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.api.model.InstagramData;
 import com.example.macstudio.instagramalison.R;
@@ -91,7 +92,8 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
 
                     @Override
                     public void onFailure(Call<SelfLikeMediaResponse> call, Throwable t) {
-                        Log.e("post", "failed");
+                        Log.e("post failed", t.getMessage());
+                        Toast.makeText(getContext(), "Failed to like", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -109,7 +111,8 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
 
                     @Override
                     public void onFailure(Call<SelfLikeMediaResponse> call, Throwable t) {
-                        Log.d("delete", "failed");
+                        Log.e("delete failed", t.getMessage());
+                        Toast.makeText(getContext(), "Failed to unlike", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

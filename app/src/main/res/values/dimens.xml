@@ -8,4 +8,5 @@
     <dimen name="view_padding">10dp</dimen>
     <dimen name="view_margin">8dp</dimen>
     <dimen name="feeds_page_title_marginTop">16dp</dimen>
+    <dimen name="heart_icon_size">25dp</dimen>
 </resources>

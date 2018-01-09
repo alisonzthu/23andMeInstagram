@@ -2,7 +2,12 @@ package com.example.macstudio.instagramalison.api.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.ValueCallback;
+
 
 /**
  * Created by macstudio on 1/4/18.
@@ -56,6 +61,10 @@ public class SharedPrefManager {
         editor.clear();
 
         editor.apply();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CookieManager.getInstance().removeAllCookies(null);
+        }
         Log.d("logging out", "successful");
         return true;
     }
