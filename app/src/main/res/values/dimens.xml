@@ -4,4 +4,8 @@
     <dimen name="feed_photo_padding">20dp</dimen>
     <dimen name="elevation_demanded_by_material_design">4dp</dimen>
     <dimen name="like_label_top_padding">30dp</dimen>
+    <dimen name="username_size">16sp</dimen>
+    <dimen name="view_padding">10dp</dimen>
+    <dimen name="view_margin">8dp</dimen>
+    <dimen name="feeds_page_title_marginTop">16dp</dimen>
 </resources>
