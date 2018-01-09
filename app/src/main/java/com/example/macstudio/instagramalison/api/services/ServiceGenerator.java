@@ -23,6 +23,10 @@ public class ServiceGenerator {
         return getRetrofit().create(GetFeedService.class);
     }
 
+    public static LikeService createLikeService() {
+        return getRetrofit().create(LikeService.class);
+    }
+
     private static Retrofit getRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl(ApplicationConsts.BASE_URL)

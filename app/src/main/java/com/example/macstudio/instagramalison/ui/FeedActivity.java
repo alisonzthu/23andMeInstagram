@@ -61,7 +61,6 @@ public class FeedActivity extends AppCompatActivity {
                 if (response.body() != null) {
                     for (int i = 0; i < response.body().getData().length; i++) {
                         data.add(response.body().getData()[i]);
-                        // I think I should try getting like data from here
                     }
 
                     listViewAdapter.notifyDataSetChanged();

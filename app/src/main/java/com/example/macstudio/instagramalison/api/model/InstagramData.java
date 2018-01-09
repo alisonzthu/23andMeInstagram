@@ -9,6 +9,7 @@ public class InstagramData {
     private User user;
     private String id;
     private Likes likes;
+    private boolean user_has_liked;
 
     public String getId() {
         return id;
@@ -30,6 +31,13 @@ public class InstagramData {
         return likes;
     }
 
+    public boolean isUser_has_liked() {
+        return user_has_liked;
+    }
+
+    public void setUser_has_liked(boolean user_has_liked) {
+        this.user_has_liked = user_has_liked;
+    }
 
     public class User {
 
