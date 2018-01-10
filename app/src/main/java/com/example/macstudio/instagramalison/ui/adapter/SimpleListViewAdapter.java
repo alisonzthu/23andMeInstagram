@@ -49,6 +49,7 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final String MEDIA_ID = data.get(position).getId();
+        Log.d("media id", MEDIA_ID);
         View currentView = convertView;
         if (currentView == null) {
             LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -58,15 +59,32 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         ImageView avatar = currentView.findViewById(R.id.avatar);
         TextView user_full_name = currentView.findViewById(R.id.user_full_name);
         ImageView feed_photo = currentView.findViewById(R.id.feed_photo);
-        LikeButton like_button = currentView.findViewById(R.id.like_button);
-        TextView like_text = currentView.findViewById(R.id.like_text);
+        final LikeButton like_button = currentView.findViewById(R.id.like_button);
+        final TextView like_text = currentView.findViewById(R.id.like_text);
+        final int likeCount = data.get(position).getLikes().getCount();
+        final boolean user_has_liked = data.get(position).isUser_has_liked();
 
-        if (data.get(position).isUser_has_liked()) {
+        if (user_has_liked) {
             like_button.setLiked(true);
-            like_text.setText("you like it");
+            int likeCountByOthers = likeCount - 1;
+            if (likeCountByOthers > 1) {
+                like_text.setText("You and " + likeCountByOthers + "others like this pic");
+            } else if (likeCountByOthers == 1){
+                like_text.setText("You and 1 other person like this pic");
+            } else {
+                like_text.setText("You like this pic");
+            }
+
         } else {
             like_button.setLiked(false);
-            like_text.setText("");
+            if (likeCount > 1) {
+                like_text.setText(likeCount + " others like this pic");
+            } else if(likeCount > 0) {
+                like_text.setText("1 person likes this pic");
+            }
+            else {
+                like_text.setText("");
+            }
         }
 
         Picasso.with(context)
@@ -92,6 +110,14 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
                     @Override
                     public void onResponse(Call<SelfLikeMediaResponse> call, Response<SelfLikeMediaResponse> response) {
                         Log.i(TAG,"POST like successful");
+                        // likeCount is the count before successful POST
+                        if (likeCount == 0) {
+                            like_text.setText("You like this pic");
+                        } else if (likeCount == 2) {
+                            like_text.setText("You and 1 other person like this pic");
+                        } else {
+                            like_text.setText("You and " + (likeCount - 1) + " others like this pic");
+                        }
                     }
 
                     @Override
@@ -112,6 +138,14 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         Log.i(TAG,"DELETE like successful");
+                        int updatedLikeCount = user_has_liked ? likeCount - 1: likeCount;
+                        if (updatedLikeCount >= 2) {
+                            like_text.setText(updatedLikeCount + " others like this pic");
+                        }  else if (updatedLikeCount == 1) {
+                            like_text.setText("1 person likes this pic");
+                        } else {
+                            like_text.setText("");
+                        }
                     }
 
                     @Override
