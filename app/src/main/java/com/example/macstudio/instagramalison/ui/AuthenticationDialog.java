@@ -102,9 +102,6 @@ public class AuthenticationDialog extends Dialog {
                 authComplete = true;
                 authListener.onTokenReceived(access_token);
                 dismiss();
-            } else if (url.contains("?error")) {
-                Toast.makeText(context, "Error Occured", Toast.LENGTH_SHORT).show();
-                dismiss();
             }
         }
     }

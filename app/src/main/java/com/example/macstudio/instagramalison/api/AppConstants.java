@@ -6,6 +6,6 @@ package com.example.macstudio.instagramalison.api;
 
 public class AppConstants {
     public static final String BASE_URL = "https://api.instagram.com/";
-    public static final String CLIENT_ID = "0637825256de4d9e9c969ec594b032c8";
-    public static final String REDIRECT_URI = "https://www.23andme.com";
+    public static final String CLIENT_ID = "c36849c99705445199b80a8dfb94a8e9";
+    public static final String REDIRECT_URI = "https://www.getpostman.com/oauth2/callback";
 }

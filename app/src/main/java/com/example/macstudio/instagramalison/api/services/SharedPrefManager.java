@@ -18,7 +18,7 @@ public class SharedPrefManager {
     private static SharedPrefManager managerInstance;
     private static Context context;
     public static final String SHARED_PREFERENCE_NAME = "myPref1";
-    private static final String KEY_ACCESS_TOKEN = "access_token";
+    public static final String KEY_ACCESS_TOKEN = "access_token";
 
     public SharedPrefManager(Context context) {
         this.context = context;

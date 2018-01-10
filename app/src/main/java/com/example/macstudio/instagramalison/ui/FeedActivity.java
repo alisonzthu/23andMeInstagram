@@ -3,6 +3,7 @@ package com.example.macstudio.instagramalison.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.R;
@@ -29,9 +31,10 @@ public class FeedActivity extends AppCompatActivity {
 
     private String access_token = null;
     private ListView feedListView;
+    private static final String TAG = "FeedActivity";
 
     private SimpleListViewAdapter listViewAdapter;
-    private ArrayList<InstagramData> data = new ArrayList<>();
+    private ArrayList<InstagramData> feedData = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,27 +43,32 @@ public class FeedActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        Intent intent = getIntent();  // is this line useful?
         SharedPreferences sharedPreferences= getApplicationContext().getSharedPreferences(SharedPrefManager.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
-        access_token = sharedPreferences.getString("access_token", "");
-        Log.d("access_token now is", access_token);
+        access_token = sharedPreferences.getString(SharedPrefManager.KEY_ACCESS_TOKEN, "");
+        System.out.print("access_token is " + access_token);
 
         feedListView = findViewById(R.id.feed_list);
 
-        listViewAdapter = new SimpleListViewAdapter(this, 0, data);
+        listViewAdapter = new SimpleListViewAdapter(this, 0, feedData);
         feedListView.setAdapter(listViewAdapter);
-        fetchData();
+        fetchFeedData();
     }
 
-    public void fetchData() {
+    public void fetchFeedData() {
         Call<InstagramResponse> call = ServiceGenerator.createGetFeedService().getOwnPhotos(access_token);
         call.enqueue(new Callback<InstagramResponse>() {
 
             @Override
             public void onResponse(Call<InstagramResponse> call, Response<InstagramResponse> response) {
                 if (response.body() != null) {
+                    Log.d(TAG, "Received none null Instagram response data");
                     for (int i = 0; i < response.body().getData().length; i++) {
-                        data.add(response.body().getData()[i]);
+                        feedData.add(response.body().getData()[i]);
+                    }
+
+                    if (feedData.size() == 0) {
+                        Toast.makeText(FeedActivity.this, "You don't have any feed", Toast.LENGTH_SHORT).show();
+                        // would be better to show the message on screen
                     }
 
                     listViewAdapter.notifyDataSetChanged();
@@ -69,12 +77,9 @@ public class FeedActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<InstagramResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                Log.e(TAG, "Error getting Instagram response: " + t.getMessage());
             }
         });
-        // when there's no data??
-
-        // do I need to call clearListView() anywhere?
     }
 
     @Override
@@ -92,11 +97,9 @@ public class FeedActivity extends AppCompatActivity {
                 Toast.makeText(FeedActivity.this, "action_logout", Toast.LENGTH_LONG).show();
 
                 if (this.access_token != null) {
-                    // this should be how to log user out
                     this.access_token = null;
-                    // this won't work for now because I can't get the access_token from api
                     item.setVisible(false);
-                    // now send the user back to MainActivity:
+                    // send the user back to MainActivity:
                     SharedPrefManager.getInstance(this).logout();
                     finish();
                     startActivity(new Intent(this, MainActivity.class));
