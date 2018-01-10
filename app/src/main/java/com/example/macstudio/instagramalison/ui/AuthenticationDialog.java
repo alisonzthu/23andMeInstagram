@@ -27,7 +27,6 @@ public class AuthenticationDialog extends Dialog {
     private static final String TAG = AuthenticationDialog.class.getSimpleName();
     private AuthenticationListener authListener;
     private WebView webView;
-    private Context context;
 
     private final String url = AppConstants.BASE_URL
             + "oauth/authorize/?client_id=" + AppConstants.CLIENT_ID
@@ -37,7 +36,6 @@ public class AuthenticationDialog extends Dialog {
 
     public AuthenticationDialog(@NonNull Context context, AuthenticationListener listener) {
         super(context);
-        this.context = context;
         authListener = listener;
     }
 
@@ -50,55 +48,48 @@ public class AuthenticationDialog extends Dialog {
 
     private void setUpWebView() {
         webView = findViewById(R.id.web_view);
-//        webView.clearCache(true);
-//        webView.clearHistory();
-//        webView.clearView();
 
         webView.setWebViewClient(new AuthWebViewClient());
-
         webView.getSettings().setJavaScriptEnabled(true);
         // what are these functions doing????!!!
 //        webView.getSettings().setLoadWithOverviewMode(true);
 //        webView.getSettings().setUseWideViewPort(true);
 //        webView.getSettings().setBuiltInZoomControls(true);
         CookieManager.getInstance().setAcceptCookie(true);
-        // change the location of this line will make the code work. weird!!!
         webView.loadUrl(url);
-//        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
 
     }
 
     private class AuthWebViewClient extends WebViewClient {
         boolean authComplete = false;
-        String access_token;
+        String access_token = null;
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            Log.d(TAG, "page started, url: " + url);
+            Log.i(TAG, "page started, url: " + url);
         }
 
         @Override
         public void onReceivedError(WebView webView, WebResourceRequest request, WebResourceError error) {
-            Log.d(TAG, "first onReceived Error");
+            Log.e(TAG, "WebViewClient onReceived Error: " + error.toString());
 
         }
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            Log.d(TAG, "errored");
-            Log.d(TAG, description);
+            Log.e(TAG, "WebViewClient errored: " + description);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Log.d(TAG, "page finished, url: " + url);
+            Log.i(TAG, "WebView page finished, url: " + url);
             if(url.contains("#access_token=") && !authComplete) {
                 Uri uri = Uri.parse(url);
                 access_token = uri.getEncodedFragment();
                 access_token = access_token.substring(access_token.lastIndexOf("=") + 1);
-                Log.i("", "CODE: " + access_token);
+                Log.i(TAG, "Got access_token");
                 authComplete = true;
                 authListener.onTokenReceived(access_token);
                 dismiss();
