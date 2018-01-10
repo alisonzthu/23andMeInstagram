@@ -22,7 +22,7 @@ public interface LikeService {
                                               @Field("access_token") String access_token);
 
     @DELETE("v1/media/{media-id}/likes")
-    Call<SelfLikeMediaResponse> deleteLikeMedia(@Path("media-id") String media_id,
+    Call<Void> deleteLikeMedia(@Path("media-id") String media_id,
                                                 @Query("access_token") String access_token);
 
 }
