@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-// to change the statusbar color:
+//      to change the statusbar color:
 //        Window window = this.getWindow();
 //        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
@@ -82,13 +82,17 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
 
     @Override
     public void onError(String error) {
-        Toast.makeText(MainActivity.this, "Error message: " + error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Auth error: " + error, Toast.LENGTH_SHORT).show();
+        Log.e(TAG, "Error occurred when getting access_token from API");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the main_menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_logout);
+        item.setVisible(false);
+
         return true;
     }
 
@@ -97,19 +101,17 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
 
         switch(item.getItemId()) {
             case R.id.action_logout:
-                Toast.makeText(MainActivity.this, "action_logout", Toast.LENGTH_LONG).show();
+                Log.i(TAG, "User loggging out");
                 if (SharedPrefManager.getInstance(this).isLoggedIn()) {
-                    // this should be how to log user out
                     SharedPrefManager.getInstance(this).logout();
-                    // this won't work for now, because I can't get the access_token from api
-                    // this link may help: https://stackoverflow.com/questions/42890528/how-to-hide-menu-item-in-android-action-bar
+                    // helpful link: https://stackoverflow.com/questions/42890528/how-to-hide-menu-item-in-android-action-bar
                     item.setVisible(false);
+                    Log.i(TAG, "User has logged out");
                 }
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
         return true;
     }
 }
