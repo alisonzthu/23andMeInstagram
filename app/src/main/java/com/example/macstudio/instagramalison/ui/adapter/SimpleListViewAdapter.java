@@ -104,15 +104,15 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
             public void unLiked(final LikeButton likeButton) {
                 Log.i(TAG,"Making unlike feed request");
                 // DELETE like
-                Call<SelfLikeMediaResponse> call = ServiceGenerator.createLikeService().deleteLikeMedia(MEDIA_ID, access_token);
-                call.enqueue(new Callback<SelfLikeMediaResponse>() {
+                Call<Void> call = ServiceGenerator.createLikeService().deleteLikeMedia(MEDIA_ID, access_token);
+                call.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Call<SelfLikeMediaResponse> call, Response<SelfLikeMediaResponse> response) {
+                    public void onResponse(Call<Void> call, Response<Void> response) {
                         Log.i(TAG,"DELETE like successful");
                     }
 
                     @Override
-                    public void onFailure(Call<SelfLikeMediaResponse> call, Throwable t) {
+                    public void onFailure(Call<Void> call, Throwable t) {
                         Log.e(TAG,"DELETE like failed: " + t.getMessage());
                         likeButton.setLiked(true);
                         Toast.makeText(getContext(), "Failed to unlike", Toast.LENGTH_SHORT).show();
