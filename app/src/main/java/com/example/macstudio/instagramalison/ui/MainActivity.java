@@ -24,21 +24,21 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements AuthenticationListener{
     private AuthenticationDialog auth_dialog;
     private Button btn_connect;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("from onCreate", SharedPrefManager.getInstance(this).isLoggedIn() + "");
+        Log.i(TAG, SharedPrefManager.getInstance(this).isLoggedIn() + "");
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
+// to change the statusbar color:
 //        Window window = this.getWindow();
 //        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
         btn_connect = findViewById(R.id.btn_connect);
-
         btn_connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,51 +48,35 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
             }
         });
     }
-// do I need onDestroy???
+
     @Override
     public void onDestroy() {
-
         super.onDestroy();
-        // destroy sharedpreferences:
+        // destroy info stored in SharedPreferences:
         if (SharedPrefManager.getInstance(this).isLoggedIn()) {
-            Log.d("user is logged in", SharedPrefManager.getInstance(this).isLoggedIn() + "");
-            // this should be how to log user out
-            SharedPrefManager.getInstance(this).logout();
-            Log.d("user is logged in", SharedPrefManager.getInstance(this).isLoggedIn() + "");
-        }
+            Log.d(TAG, "user is still logged in");
 
+            try{
+                SharedPrefManager.getInstance(this).logout();
+            } catch(Exception e) {
+                Log.e(TAG, "Fail to log user out");
+            }
+        }
     }
 
     @Override
     public void onTokenReceived(String access_token) {
         if (access_token != null) {
-            Log.d("dd", "d");
+            Log.i(TAG, "Received access_token");
             final String ACCESS_TOKEN = access_token;
-            Toast.makeText(MainActivity.this, "hahaha", Toast.LENGTH_LONG).show();
-
-            Call<InstaUserResponse> call = ServiceGenerator.createUserDataService().getUserProfile(access_token);
-            call.enqueue(new Callback<InstaUserResponse>() {
-                @Override
-                public void onResponse(Call<InstaUserResponse> call, Response<InstaUserResponse> response) {
-
-                    if (response.body() != null && response.body().getData() != null) {
-                        Log.d("not null case", response.body().getData().getId());
-                        // put both access_token and user_id into SharedPreferences
-                        SharedPrefManager.getInstance(getApplicationContext())
-                                .userLogin(ACCESS_TOKEN, response.body().getData().getId());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<InstaUserResponse> call, Throwable t) {
-                    Log.e("Erred", "in getting user data");
-                }
-            });
+            SharedPrefManager.getInstance(getApplicationContext())
+                    .userLogin(ACCESS_TOKEN);
             Intent feedIntent = new Intent(MainActivity.this, FeedActivity.class);
             startActivity(feedIntent);
         } else {
             auth_dialog.dismiss();
-            Toast.makeText(MainActivity.this, "nonono", Toast.LENGTH_LONG).show();
+            Log.wtf(TAG, "access_token is null");
+            Toast.makeText(MainActivity.this, "Can NOT access API", Toast.LENGTH_LONG).show();
         }
     }
 

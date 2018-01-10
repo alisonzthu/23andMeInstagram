@@ -27,7 +27,7 @@ import retrofit2.Response;
 
 public class FeedActivity extends AppCompatActivity {
 
-    private String access_token = "";
+    private String access_token = null;
     private ListView feedListView;
 
     private SimpleListViewAdapter listViewAdapter;
@@ -91,9 +91,9 @@ public class FeedActivity extends AppCompatActivity {
             case R.id.action_logout:
                 Toast.makeText(FeedActivity.this, "action_logout", Toast.LENGTH_LONG).show();
 
-                if (this.access_token != "") {
+                if (this.access_token != null) {
                     // this should be how to log user out
-                    this.access_token = "";
+                    this.access_token = null;
                     // this won't work for now because I can't get the access_token from api
                     item.setVisible(false);
                     // now send the user back to MainActivity:
