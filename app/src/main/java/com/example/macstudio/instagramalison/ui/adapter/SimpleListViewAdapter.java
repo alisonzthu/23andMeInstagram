@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.api.model.InstagramData;
 import com.example.macstudio.instagramalison.R;
-import com.example.macstudio.instagramalison.api.model.InstagramResponse;
 import com.example.macstudio.instagramalison.api.model.SelfLikeMediaResponse;
 import com.example.macstudio.instagramalison.api.services.ServiceGenerator;
 import com.example.macstudio.instagramalison.api.services.SharedPrefManager;

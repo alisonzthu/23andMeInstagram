@@ -16,6 +16,7 @@ import android.webkit.ValueCallback;
 public class SharedPrefManager {
 
     private static SharedPrefManager managerInstance;
+    private static final String TAG = SharedPrefManager.class.getSimpleName();
     private static Context context;
     public static final String SHARED_PREFERENCE_NAME = "myPref1";
     public static final String KEY_ACCESS_TOKEN = "access_token";
@@ -61,7 +62,7 @@ public class SharedPrefManager {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             CookieManager.getInstance().removeAllCookies(null);
         }
-        Log.d("logging out", "successful");
+        Log.i(TAG,"User successfully logged out");
         return true;
     }
 
