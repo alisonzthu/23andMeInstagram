@@ -35,6 +35,7 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
     private Context context;
     private ArrayList<InstagramData> data;
     private static String access_token = null;
+    private static final String TAG = SimpleListViewAdapter.class.getSimpleName();
 
 
     public SimpleListViewAdapter(Context context, int textViewResourceId, ArrayList<InstagramData> dataObjects){
@@ -56,9 +57,10 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         }
 
         ImageView avatar = currentView.findViewById(R.id.avatar);
-        TextView user_fullname = currentView.findViewById(R.id.user_fullname);
+        TextView user_full_name = currentView.findViewById(R.id.user_full_name);
         ImageView feed_photo = currentView.findViewById(R.id.feed_photo);
         LikeButton like_button = currentView.findViewById(R.id.like_button);
+
         if (data.get(position).isUser_has_liked()) {
             like_button.setLiked(true);
         } else {
@@ -71,7 +73,7 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
                 .centerInside()
                 .into(avatar);
 
-        user_fullname.setText(data.get(position).getUser().getFull_name());
+        user_full_name.setText(data.get(position).getUser().getFull_name());
 
         Picasso.with(context)
                 .load(data.get(position).getImages().getStandard_resolution().getUrl())
@@ -81,18 +83,18 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         like_button.setOnLikeListener(new OnLikeListener(){
             @Override
             public void liked(final LikeButton likeButton) {
-                Log.d("making like request", likeButton.isLiked()+"");
-                // make POST request
+                Log.d(TAG, "Making like feed request");
+                // POST like
                 Call<SelfLikeMediaResponse> call = ServiceGenerator.createLikeService().postLikeMedia(MEDIA_ID, access_token);
                 call.enqueue(new Callback<SelfLikeMediaResponse>() {
                     @Override
                     public void onResponse(Call<SelfLikeMediaResponse> call, Response<SelfLikeMediaResponse> response) {
-                        Log.d("post", "successful");
+                        Log.i(TAG,"POST like successful");
                     }
 
                     @Override
                     public void onFailure(Call<SelfLikeMediaResponse> call, Throwable t) {
-                        Log.e("post failed", t.getMessage());
+                        Log.e(TAG, "Post like failed: " + t.getMessage());
                         likeButton.setLiked(false);
                         Toast.makeText(getContext(), "Failed to like", Toast.LENGTH_SHORT).show();
                     }
@@ -101,18 +103,18 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
 
             @Override
             public void unLiked(final LikeButton likeButton) {
-                Log.d("making unlike request", likeButton.isLiked()+"");
-                // make DELETE request
+                Log.i(TAG,"Making unlike feed request");
+                // DELETE like
                 Call<SelfLikeMediaResponse> call = ServiceGenerator.createLikeService().deleteLikeMedia(MEDIA_ID, access_token);
                 call.enqueue(new Callback<SelfLikeMediaResponse>() {
                     @Override
                     public void onResponse(Call<SelfLikeMediaResponse> call, Response<SelfLikeMediaResponse> response) {
-                        Log.d("delete", "successful");
+                        Log.i(TAG,"DELETE like successful");
                     }
 
                     @Override
                     public void onFailure(Call<SelfLikeMediaResponse> call, Throwable t) {
-                        Log.e("delete failed", t.getMessage());
+                        Log.e(TAG,"DELETE like failed: " + t.getMessage());
                         likeButton.setLiked(true);
                         Toast.makeText(getContext(), "Failed to unlike", Toast.LENGTH_SHORT).show();
                     }
@@ -122,7 +124,8 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         return currentView;
     }
 
-    public void clearListView() {
-        data.clear();
-    }
+    // I'm not clearing listview content. Why and when should I do it?
+//    public void clearListView() {
+//        data.clear();
+//    }
 }

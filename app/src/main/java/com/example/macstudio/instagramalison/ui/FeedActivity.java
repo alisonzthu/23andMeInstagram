@@ -3,7 +3,6 @@ package com.example.macstudio.instagramalison.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.R;
@@ -31,7 +29,7 @@ public class FeedActivity extends AppCompatActivity {
 
     private String access_token = null;
     private ListView feedListView;
-    private static final String TAG = "FeedActivity";
+    private static final String TAG = FeedActivity.class.getSimpleName();
 
     private SimpleListViewAdapter listViewAdapter;
     private ArrayList<InstagramData> feedData = new ArrayList<>();

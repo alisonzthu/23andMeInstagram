@@ -12,7 +12,6 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.R;
 import com.example.macstudio.instagramalison.api.AppConstants;

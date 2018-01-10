@@ -24,7 +24,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements AuthenticationListener{
     private AuthenticationDialog auth_dialog;
     private Button btn_connect;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
