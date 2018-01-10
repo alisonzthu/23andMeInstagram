@@ -5,7 +5,7 @@ package com.example.macstudio.instagramalison.api.model;
  */
 
 public class SelfLikeMedia {
-    // is of the media is the only thing we care about
+    // id of the media is the only thing we care about
     private String id;
 
     public String getId() {
