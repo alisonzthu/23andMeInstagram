@@ -59,11 +59,14 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         TextView user_full_name = currentView.findViewById(R.id.user_full_name);
         ImageView feed_photo = currentView.findViewById(R.id.feed_photo);
         LikeButton like_button = currentView.findViewById(R.id.like_button);
+        TextView like_text = currentView.findViewById(R.id.like_text);
 
         if (data.get(position).isUser_has_liked()) {
             like_button.setLiked(true);
+            like_text.setText("you like it");
         } else {
             like_button.setLiked(false);
+            like_text.setText("");
         }
 
         Picasso.with(context)
