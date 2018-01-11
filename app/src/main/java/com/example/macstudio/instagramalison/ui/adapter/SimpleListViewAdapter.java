@@ -20,6 +20,8 @@ import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -111,13 +113,9 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
                     public void onResponse(Call<SelfLikeMediaResponse> call, Response<SelfLikeMediaResponse> response) {
                         Log.i(TAG,"POST like successful");
                         // likeCount is the count before successful POST
-                        if (likeCount == 0) {
-                            like_text.setText("You like this pic");
-                        } else if (likeCount == 2) {
-                            like_text.setText("You and 1 other person like this pic");
-                        } else {
-                            like_text.setText("You and " + (likeCount - 1) + " others like this pic");
-                        }
+                        // user_has_liked == true means user like at the beginning, then unlike -> like
+                        int updatedLikeCount = user_has_liked ? likeCount - 1 : likeCount;
+                        updateLikeText(updatedLikeCount, like_text);
                     }
 
                     @Override
@@ -138,14 +136,9 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         Log.i(TAG,"DELETE like successful");
-                        int updatedLikeCount = user_has_liked ? likeCount - 1: likeCount;
-                        if (updatedLikeCount >= 2) {
-                            like_text.setText(updatedLikeCount + " others like this pic");
-                        }  else if (updatedLikeCount == 1) {
-                            like_text.setText("1 person likes this pic");
-                        } else {
-                            like_text.setText("");
-                        }
+                        // user_has_liked == true means user doesn't like at the beginning, but then like -> unlike
+                        int updatedLikeCount = user_has_liked ? likeCount - 1 : likeCount;
+                        updateUnlikeCount(updatedLikeCount, like_text);
                     }
 
                     @Override
@@ -164,4 +157,24 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
 //    public void clearListView() {
 //        data.clear();
 //    }
+
+    public void updateLikeText(int likeCount, TextView like_text) {
+        if (likeCount == 0) {
+            like_text.setText("You like this pic");
+        } else if (likeCount == 1) {
+            like_text.setText("You and 1 other person like this pic");
+        } else {
+            like_text.setText("You and " + likeCount + " others like this pic");
+        }
+    }
+
+    public void updateUnlikeCount(int likeCount, TextView like_text) {
+        if (likeCount >= 2) {
+            like_text.setText(likeCount + " others like this pic");
+        }else if (likeCount == 1) {
+            like_text.setText("1 person likes this pic");
+        } else {
+            like_text.setText("");
+        }
+    }
 }
