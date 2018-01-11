@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
 
         switch(item.getItemId()) {
             case R.id.action_logout:
-                Log.i(TAG, "User loggging out");
+                Log.i(TAG, "User logging out");
                 if (SharedPrefManager.getInstance(this).isLoggedIn()) {
                     SharedPrefManager.getInstance(this).logout();
                     // helpful link: https://stackoverflow.com/questions/42890528/how-to-hide-menu-item-in-android-action-bar

@@ -92,7 +92,6 @@ public class FeedActivity extends AppCompatActivity {
 
         switch(item.getItemId()) {
             case R.id.action_logout:
-                Toast.makeText(FeedActivity.this, "action_logout", Toast.LENGTH_LONG).show();
 
                 if (this.access_token != null) {
                     this.access_token = null;
