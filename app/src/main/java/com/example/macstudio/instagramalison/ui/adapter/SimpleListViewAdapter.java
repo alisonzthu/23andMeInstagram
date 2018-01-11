@@ -20,7 +20,6 @@ import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -69,24 +68,10 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
         if (user_has_liked) {
             like_button.setLiked(true);
             int likeCountByOthers = likeCount - 1;
-            if (likeCountByOthers > 1) {
-                like_text.setText("You and " + likeCountByOthers + " others like this pic");
-            } else if (likeCountByOthers == 1){
-                like_text.setText("You and 1 other person like this pic");
-            } else {
-                like_text.setText("You like this pic");
-            }
-
+            updateLikeText(likeCountByOthers, like_text);
         } else {
             like_button.setLiked(false);
-            if (likeCount > 1) {
-                like_text.setText(likeCount + " others like this pic");
-            } else if(likeCount > 0) {
-                like_text.setText("1 person likes this pic");
-            }
-            else {
-                like_text.setText("");
-            }
+            updateUnlikeCount(likeCount, like_text);
         }
 
         Picasso.with(context)
@@ -175,6 +160,6 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
             like_text.setText("1 person likes this pic");
         } else {
             like_text.setText("");
-        }
+         }
     }
 }

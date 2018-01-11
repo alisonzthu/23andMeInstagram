@@ -37,7 +37,7 @@ public class SharedPrefManager {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_ACCESS_TOKEN, access_token);
-        // apply() is asynchronou and commit() is synchronous.
+        // apply() is asynchronous and commit() is synchronous.
         // One shouldn't call commit() from the UI thread
         editor.apply();
 
