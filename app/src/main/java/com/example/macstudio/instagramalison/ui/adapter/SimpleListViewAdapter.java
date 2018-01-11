@@ -68,7 +68,7 @@ public class SimpleListViewAdapter extends ArrayAdapter<InstagramData>{
             like_button.setLiked(true);
             int likeCountByOthers = likeCount - 1;
             if (likeCountByOthers > 1) {
-                like_text.setText("You and " + likeCountByOthers + "others like this pic");
+                like_text.setText("You and " + likeCountByOthers + " others like this pic");
             } else if (likeCountByOthers == 1){
                 like_text.setText("You and 1 other person like this pic");
             } else {

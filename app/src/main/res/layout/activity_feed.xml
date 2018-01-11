@@ -29,20 +29,13 @@
         app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
         tools:layout_editor_absoluteX="114dp" />
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/feed_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/feeds_page_title"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <ListView
-            android:id="@+id/feed_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-
-            />
-    </LinearLayout>
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feeds_page_title" />
 </android.support.constraint.ConstraintLayout>
