@@ -17,6 +17,8 @@ import com.example.macstudio.instagramalison.api.model.InstagramData;
 import com.example.macstudio.instagramalison.api.model.InstagramResponse;
 import com.example.macstudio.instagramalison.api.services.ServiceGenerator;
 import com.example.macstudio.instagramalison.api.services.SharedPrefManager;
+import com.example.macstudio.instagramalison.database.FeedDbHelper;
+import com.example.macstudio.instagramalison.database.FeedModel;
 import com.example.macstudio.instagramalison.ui.adapter.SimpleListViewAdapter;
 
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ public class FeedActivity extends AppCompatActivity {
     private String access_token = null;
     private ListView feedListView;
     private static final String TAG = FeedActivity.class.getSimpleName();
+    private FeedModel[] feeds;
+    private FeedDbHelper feedDbHelper = new FeedDbHelper(this);
 
     private SimpleListViewAdapter listViewAdapter;
     private ArrayList<InstagramData> feedData = new ArrayList<>();
