@@ -10,5 +10,7 @@ public class FeedModel {
     public String avatar;
     public String image;
     public Integer likeStatus;
+    public Integer likeCount;
+    public String mediaId;
 //    public String likeText;
 }

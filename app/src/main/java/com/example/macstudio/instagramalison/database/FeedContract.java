@@ -12,11 +12,13 @@ public class FeedContract {
 
     public static final String SQL_CREATE_TABLE =
             "CREATE TABLE " + FeedEntry.TABLE_NAME + " (" +
-                FeedEntry._ID + " INTEGER PRIMARY KEY," +
-                FeedEntry.COLUMN_NAME_USERNAME + " TEXT," +
-                FeedEntry.COLUMN_NAME_AVATAR + " TEXT," +
-                FeedEntry.COLUMN_NAME_IMAGE + " TEXT," +
-                FeedEntry.COLUMN_NAME_LIKESTATUS + " INTEGER)";
+                FeedEntry._ID + " INTEGER PRIMARY KEY, " +
+                FeedEntry.COLUMN_NAME_USERNAME + " TEXT, " +
+                FeedEntry.COLUMN_NAME_AVATAR + " TEXT, " +
+                FeedEntry.COLUMN_NAME_IMAGE + " TEXT, " +
+                FeedEntry.COLUMN_NAME_LIKESTATUS + " INTEGER, " +
+                FeedEntry.COLUMN_NAME_LIKECOUNT + " INTEGER, " +
+                FeedEntry.COLUMN_NAME_MEDIAID + " TEXT)";
 //                FeedEntry.COLUMN_NAME_LIKETEXT + " TEXT)";
 
     public static final String SQL_DELETE_ENTRIES =
@@ -28,6 +30,8 @@ public class FeedContract {
         public static final String COLUMN_NAME_AVATAR = "avatar";
         public static final String COLUMN_NAME_IMAGE = "image";
         public static final String COLUMN_NAME_LIKESTATUS = "likeStatus";
+        public static final String COLUMN_NAME_LIKECOUNT = "likeCount";
+        public static final String COLUMN_NAME_MEDIAID = "mediaId";
 //        public static final String COLUMN_NAME_LIKETEXT = "likeText";
     }
 }

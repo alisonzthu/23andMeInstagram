@@ -3,6 +3,7 @@ package com.example.macstudio.instagramalison.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by azhang on 1/12/18.
@@ -15,6 +16,7 @@ public class FeedDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d("what?", "feedDbHelper");
         db.execSQL(FeedContract.SQL_CREATE_TABLE);
     }
 

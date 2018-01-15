@@ -139,6 +139,8 @@ public class FeedActivity extends AppCompatActivity {
             values.put(FeedContract.FeedEntry.COLUMN_NAME_AVATAR, dataPoint.getUser().getProfile_picture());
             values.put(FeedContract.FeedEntry.COLUMN_NAME_IMAGE, dataPoint.getImages().getStandard_resolution().getUrl());
             values.put(FeedContract.FeedEntry.COLUMN_NAME_LIKESTATUS, dataPoint.isUser_has_liked() ? 1 : 0);
+            values.put(FeedContract.FeedEntry.COLUMN_NAME_LIKECOUNT, dataPoint.getLikes().getCount());
+            values.put(FeedContract.FeedEntry.COLUMN_NAME_MEDIAID, dataPoint.getId());
 
             db.insert(FeedContract.FeedEntry.TABLE_NAME, null, values);
         }
