@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -20,7 +19,6 @@ import com.example.macstudio.instagramalison.R;
 import com.example.macstudio.instagramalison.api.AppConstants;
 import com.example.macstudio.instagramalison.api.services.SharedPrefManager;
 import com.example.macstudio.instagramalison.listener.AuthenticationListener;
-import android.support.design.widget.Snackbar;
 
 
 /**
@@ -74,16 +72,17 @@ public class AuthenticationDialog extends Dialog {
         @Override
         public void onReceivedError(WebView webView, WebResourceRequest request, WebResourceError error) {
             Log.e(TAG, "WebViewClient onReceived Error: " + error.toString());
-            Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
             dismiss();
             // detect if auth_token is there
             SharedPreferences sharedPreferences= getContext().getSharedPreferences(SharedPrefManager.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
             access_token = sharedPreferences.getString(SharedPrefManager.KEY_ACCESS_TOKEN, "");
             if (access_token != "") {
-                // go to feedActivity with db data
-                Toast.makeText(getContext(), "token is still here", Toast.LENGTH_SHORT).show();
+                // this case the user can see feedActivity with DB DATA
+                // access_token is still there so the user is still logged in, should allow the user
+                // to just see her feeds
                 authListener.onNoInternet();
             } else {
+                // user has logged out, can't show any feeds
                 Toast.makeText(getContext(), "Can't show any feed", Toast.LENGTH_SHORT).show();
             }
         }

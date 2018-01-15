@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
 
     @Override
     public void onNoInternet() {
-        Log.d(TAG, "no internet but yes access_token!!!!!!");
+        Log.d(TAG, "No internet, but user still logged in");
         Intent feedIntent = new Intent(MainActivity.this, FeedActivity.class);
         startActivity(feedIntent);
     }

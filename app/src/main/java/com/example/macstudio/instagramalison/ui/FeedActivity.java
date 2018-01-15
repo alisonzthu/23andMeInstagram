@@ -58,7 +58,9 @@ public class FeedActivity extends AppCompatActivity {
         feedListView.setAdapter(feedCursorAdapter);
         Intent intent = getIntent();
 
+        // only fetch and save data when there's internet connection
         if (intent!= null && intent.getBooleanExtra("Internet", false)) {
+            Toast.makeText(getApplicationContext(), "Read and write", Toast.LENGTH_SHORT).show();
             fetchAndSaveFeedData(feedCursorAdapter);
         }
     }
