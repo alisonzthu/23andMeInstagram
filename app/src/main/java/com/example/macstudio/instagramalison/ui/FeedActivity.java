@@ -1,8 +1,11 @@
 package com.example.macstudio.instagramalison.ui;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +20,8 @@ import com.example.macstudio.instagramalison.api.model.InstagramData;
 import com.example.macstudio.instagramalison.api.model.InstagramResponse;
 import com.example.macstudio.instagramalison.api.services.ServiceGenerator;
 import com.example.macstudio.instagramalison.api.services.SharedPrefManager;
+import com.example.macstudio.instagramalison.database.FeedContract;
+import com.example.macstudio.instagramalison.database.FeedCursorAdapter;
 import com.example.macstudio.instagramalison.database.FeedDbHelper;
 import com.example.macstudio.instagramalison.database.FeedModel;
 import com.example.macstudio.instagramalison.ui.adapter.SimpleListViewAdapter;
@@ -35,7 +40,7 @@ public class FeedActivity extends AppCompatActivity {
     private FeedModel[] feeds;
     private FeedDbHelper feedDbHelper = new FeedDbHelper(this);
 
-    private SimpleListViewAdapter listViewAdapter;
+//    private SimpleListViewAdapter listViewAdapter;
     private ArrayList<InstagramData> feedData = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +52,24 @@ public class FeedActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences= getApplicationContext().getSharedPreferences(SharedPrefManager.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
         access_token = sharedPreferences.getString(SharedPrefManager.KEY_ACCESS_TOKEN, "");
-        System.out.print("access_token is " + access_token);
+        Log.i(TAG, "Obtained access_token");
 
+        SQLiteDatabase db = feedDbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM feeds", null);
+        final FeedCursorAdapter feedCursorAdapter = new FeedCursorAdapter(this, cursor);
         feedListView = findViewById(R.id.feed_list);
 
-        listViewAdapter = new SimpleListViewAdapter(this, 0, feedData);
-        feedListView.setAdapter(listViewAdapter);
-        fetchFeedData();
+//        listViewAdapter = new SimpleListViewAdapter(this, 0, feedData);
+        feedListView.setAdapter(feedCursorAdapter);
+        Intent intent = getIntent();
+        Toast.makeText(getApplicationContext(), "yoyoyoyo", Toast.LENGTH_LONG).show();
+
+        if (intent!= null && intent.getBooleanExtra("Internet", false)) {
+            fetchAndSaveFeedData(feedCursorAdapter);
+        }
     }
 
-    public void fetchFeedData() {
+    public void fetchAndSaveFeedData(final FeedCursorAdapter adapter) {
         Call<InstagramResponse> call = ServiceGenerator.createGetFeedService().getOwnPhotos(access_token);
         call.enqueue(new Callback<InstagramResponse>() {
 
@@ -64,16 +77,20 @@ public class FeedActivity extends AppCompatActivity {
             public void onResponse(Call<InstagramResponse> call, Response<InstagramResponse> response) {
                 if (response.body() != null) {
                     Log.d(TAG, "Received none null Instagram response data");
-                    for (int i = 0; i < response.body().getData().length; i++) {
-                        feedData.add(response.body().getData()[i]);
-                    }
 
-                    if (feedData.size() == 0) {
+                    // should test this data.length == 0 thing:
+                    if (response.body().getData().length == 0) {
                         Toast.makeText(FeedActivity.this, "You don't have any feed", Toast.LENGTH_SHORT).show();
                         // would be better to show the message on screen
+                    } else {
+                        for (int i = 0; i < response.body().getData().length; i++) {
+                            feedData.add(response.body().getData()[i]);
+                        }
+                        saveDataToDb(feedData);
                     }
-
-                    listViewAdapter.notifyDataSetChanged();
+                    SQLiteDatabase db = feedDbHelper.getWritableDatabase();
+                    Cursor cursor = db.rawQuery("SELECT * FROM feeds", null);
+                    adapter.changeCursor(cursor);
                 }
             }
 
@@ -111,4 +128,20 @@ public class FeedActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    private void saveDataToDb(ArrayList<InstagramData> data) {
+        SQLiteDatabase db = feedDbHelper.getWritableDatabase();
+        db.delete(FeedContract.FeedEntry.TABLE_NAME, null, null);
+
+        for (InstagramData dataPoint: data) {
+            ContentValues values = new ContentValues();
+            values.put(FeedContract.FeedEntry.COLUMN_NAME_USERNAME, dataPoint.getUser().getFull_name());
+            values.put(FeedContract.FeedEntry.COLUMN_NAME_AVATAR, dataPoint.getUser().getProfile_picture());
+            values.put(FeedContract.FeedEntry.COLUMN_NAME_IMAGE, dataPoint.getImages().getStandard_resolution().getUrl());
+            values.put(FeedContract.FeedEntry.COLUMN_NAME_LIKESTATUS, dataPoint.isUser_has_liked() ? 1 : 0);
+
+            db.insert(FeedContract.FeedEntry.TABLE_NAME, null, values);
+        }
+    }
+
 }

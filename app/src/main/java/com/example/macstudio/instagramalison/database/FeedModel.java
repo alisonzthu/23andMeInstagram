@@ -9,5 +9,6 @@ public class FeedModel {
     public String username;
     public String avatar;
     public String image;
-    public String likeText;
+    public Integer likeStatus;
+//    public String likeText;
 }

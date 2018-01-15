@@ -2,20 +2,26 @@ package com.example.macstudio.instagramalison.ui;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.example.macstudio.instagramalison.R;
 import com.example.macstudio.instagramalison.api.AppConstants;
+import com.example.macstudio.instagramalison.api.services.SharedPrefManager;
 import com.example.macstudio.instagramalison.listener.AuthenticationListener;
+import android.support.design.widget.Snackbar;
+
 
 /**
  * Created by macstudio on 12/18/17.
@@ -50,10 +56,6 @@ public class AuthenticationDialog extends Dialog {
 
         webView.setWebViewClient(new AuthWebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
-        // what are these functions doing????!!!
-//        webView.getSettings().setLoadWithOverviewMode(true);
-//        webView.getSettings().setUseWideViewPort(true);
-//        webView.getSettings().setBuiltInZoomControls(true);
         CookieManager.getInstance().setAcceptCookie(true);
         webView.loadUrl(url);
 
@@ -72,12 +74,24 @@ public class AuthenticationDialog extends Dialog {
         @Override
         public void onReceivedError(WebView webView, WebResourceRequest request, WebResourceError error) {
             Log.e(TAG, "WebViewClient onReceived Error: " + error.toString());
-
+            Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+            dismiss();
+            // detect if auth_token is there
+            SharedPreferences sharedPreferences= getContext().getSharedPreferences(SharedPrefManager.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+            access_token = sharedPreferences.getString(SharedPrefManager.KEY_ACCESS_TOKEN, "");
+            if (access_token != "") {
+                // go to feedActivity with db data
+                Toast.makeText(getContext(), "token is still here", Toast.LENGTH_SHORT).show();
+                authListener.onNoInternet();
+            } else {
+                Toast.makeText(getContext(), "Can't show any feed", Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             Log.e(TAG, "WebViewClient errored: " + description);
+            Toast.makeText(getContext(), "error 2", Toast.LENGTH_SHORT).show();
         }
 
         @Override

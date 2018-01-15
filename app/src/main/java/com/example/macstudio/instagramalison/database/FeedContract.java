@@ -16,7 +16,8 @@ public class FeedContract {
                 FeedEntry.COLUMN_NAME_USERNAME + " TEXT," +
                 FeedEntry.COLUMN_NAME_AVATAR + " TEXT," +
                 FeedEntry.COLUMN_NAME_IMAGE + " TEXT," +
-                FeedEntry.COLUMN_NAME_LIKETEXT + " TEXT)";
+                FeedEntry.COLUMN_NAME_LIKESTATUS + " INTEGER)";
+//                FeedEntry.COLUMN_NAME_LIKETEXT + " TEXT)";
 
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + FeedEntry.TABLE_NAME;
@@ -26,6 +27,7 @@ public class FeedContract {
         public static final String COLUMN_NAME_USERNAME = "username";
         public static final String COLUMN_NAME_AVATAR = "avatar";
         public static final String COLUMN_NAME_IMAGE = "image";
-        public static final String COLUMN_NAME_LIKETEXT = "likeText";
+        public static final String COLUMN_NAME_LIKESTATUS = "likeStatus";
+//        public static final String COLUMN_NAME_LIKETEXT = "likeText";
     }
 }

@@ -34,9 +34,6 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-//      to change the statusbar color:
-//        Window window = this.getWindow();
-//        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
         btn_connect = findViewById(R.id.btn_connect);
         btn_connect.setOnClickListener(new View.OnClickListener() {
@@ -72,12 +69,20 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
             SharedPrefManager.getInstance(getApplicationContext())
                     .userLogin(ACCESS_TOKEN);
             Intent feedIntent = new Intent(MainActivity.this, FeedActivity.class);
+            feedIntent.putExtra("Internet", true);
             startActivity(feedIntent);
         } else {
             auth_dialog.dismiss();
             Log.wtf(TAG, "access_token is null");
             Toast.makeText(MainActivity.this, "Can NOT access API", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onNoInternet() {
+        Log.d(TAG, "no internet but yes access_token!!!!!!");
+        Intent feedIntent = new Intent(MainActivity.this, FeedActivity.class);
+        startActivity(feedIntent);
     }
 
     @Override
