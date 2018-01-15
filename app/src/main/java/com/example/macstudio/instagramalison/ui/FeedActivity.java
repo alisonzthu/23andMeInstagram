@@ -23,8 +23,6 @@ import com.example.macstudio.instagramalison.api.services.SharedPrefManager;
 import com.example.macstudio.instagramalison.database.FeedContract;
 import com.example.macstudio.instagramalison.database.FeedCursorAdapter;
 import com.example.macstudio.instagramalison.database.FeedDbHelper;
-import com.example.macstudio.instagramalison.database.FeedModel;
-import com.example.macstudio.instagramalison.ui.adapter.SimpleListViewAdapter;
 
 import java.util.ArrayList;
 
@@ -37,11 +35,9 @@ public class FeedActivity extends AppCompatActivity {
     private String access_token = null;
     private ListView feedListView;
     private static final String TAG = FeedActivity.class.getSimpleName();
-    private FeedModel[] feeds;
     private FeedDbHelper feedDbHelper = new FeedDbHelper(this);
-
-//    private SimpleListViewAdapter listViewAdapter;
     private ArrayList<InstagramData> feedData = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +55,8 @@ public class FeedActivity extends AppCompatActivity {
         final FeedCursorAdapter feedCursorAdapter = new FeedCursorAdapter(this, cursor);
         feedListView = findViewById(R.id.feed_list);
 
-//        listViewAdapter = new SimpleListViewAdapter(this, 0, feedData);
         feedListView.setAdapter(feedCursorAdapter);
         Intent intent = getIntent();
-        Toast.makeText(getApplicationContext(), "yoyoyoyo", Toast.LENGTH_LONG).show();
 
         if (intent!= null && intent.getBooleanExtra("Internet", false)) {
             fetchAndSaveFeedData(feedCursorAdapter);
@@ -78,7 +72,6 @@ public class FeedActivity extends AppCompatActivity {
                 if (response.body() != null) {
                     Log.d(TAG, "Received none null Instagram response data");
 
-                    // should test this data.length == 0 thing:
                     if (response.body().getData().length == 0) {
                         Toast.makeText(FeedActivity.this, "You don't have any feed", Toast.LENGTH_SHORT).show();
                         // would be better to show the message on screen
@@ -145,5 +138,4 @@ public class FeedActivity extends AppCompatActivity {
             db.insert(FeedContract.FeedEntry.TABLE_NAME, null, values);
         }
     }
-
 }

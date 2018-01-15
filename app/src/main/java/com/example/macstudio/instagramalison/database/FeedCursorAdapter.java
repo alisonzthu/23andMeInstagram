@@ -1,6 +1,7 @@
 package com.example.macstudio.instagramalison.database;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.example.macstudio.instagramalison.R;
 import com.example.macstudio.instagramalison.api.model.SelfLikeMediaResponse;
 import com.example.macstudio.instagramalison.api.services.ServiceGenerator;
+import com.example.macstudio.instagramalison.api.services.SharedPrefManager;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.squareup.picasso.Picasso;
@@ -32,6 +34,8 @@ public class FeedCursorAdapter extends CursorAdapter {
 
     public FeedCursorAdapter(Context context, Cursor c) {
         super(context, c, false);
+        SharedPreferences sharedPreferences= context.getSharedPreferences(SharedPrefManager.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        access_token = sharedPreferences.getString("access_token", "");
     }
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
