@@ -13,5 +13,4 @@ public class FeedModel {
     public Integer likeStatus;
     public Integer likeCount;
     public String mediaId;
-//    public String likeText;
 }

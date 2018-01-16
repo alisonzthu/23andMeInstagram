@@ -19,7 +19,6 @@ public class FeedContract {
                 FeedEntry.COLUMN_NAME_LIKESTATUS + " INTEGER, " +
                 FeedEntry.COLUMN_NAME_LIKECOUNT + " INTEGER, " +
                 FeedEntry.COLUMN_NAME_MEDIAID + " TEXT)";
-//                FeedEntry.COLUMN_NAME_LIKETEXT + " TEXT)";
 
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + FeedEntry.TABLE_NAME;
@@ -32,6 +31,5 @@ public class FeedContract {
         public static final String COLUMN_NAME_LIKESTATUS = "likeStatus";
         public static final String COLUMN_NAME_LIKECOUNT = "likeCount";
         public static final String COLUMN_NAME_MEDIAID = "mediaId";
-//        public static final String COLUMN_NAME_LIKETEXT = "likeText";
     }
 }

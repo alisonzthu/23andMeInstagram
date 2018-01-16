@@ -173,12 +173,11 @@ public class FeedCursorAdapter extends CursorAdapter {
         ContentValues values = new ContentValues();
         values.put(FeedContract.FeedEntry.COLUMN_NAME_LIKESTATUS, likeStatusInt);
         values.put(FeedContract.FeedEntry.COLUMN_NAME_LIKECOUNT, updatedLikeCount);
-        Log.d(TAG, "values: " + values);
         db.update(
                 FeedContract.FeedEntry.TABLE_NAME,
                 values,
                 FeedContract.FeedEntry.COLUMN_NAME_MEDIAID + "='" + mediaId + "'",
                 null);
-        Log.d(TAG, "update db called");
+        Log.i(TAG, "DB updated");
     }
 }
