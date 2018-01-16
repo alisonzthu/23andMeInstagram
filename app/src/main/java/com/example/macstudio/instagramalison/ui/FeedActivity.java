@@ -60,8 +60,9 @@ public class FeedActivity extends AppCompatActivity {
 
         // only fetch and save data when there's internet connection
         if (intent!= null && intent.getBooleanExtra("Internet", false)) {
-            Toast.makeText(getApplicationContext(), "Read and write", Toast.LENGTH_SHORT).show();
             fetchAndSaveFeedData(feedCursorAdapter);
+        } else if (intent != null && !intent.getBooleanExtra("Internet", false)) {
+            Toast.makeText(getApplicationContext(), "Read ONLY", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -92,6 +93,7 @@ public class FeedActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<InstagramResponse> call, Throwable t) {
                 Log.e(TAG, "Error getting Instagram response: " + t.getMessage());
+                Toast.makeText(getApplicationContext(), "Fail to fetch data", Toast.LENGTH_SHORT).show();
             }
         });
     }
