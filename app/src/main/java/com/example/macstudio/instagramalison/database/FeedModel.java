@@ -9,6 +9,7 @@ public class FeedModel {
     public String username;
     public String avatar;
     public String image;
+    // whether the user herself likes the current media
     public Integer likeStatus;
     public Integer likeCount;
     public String mediaId;

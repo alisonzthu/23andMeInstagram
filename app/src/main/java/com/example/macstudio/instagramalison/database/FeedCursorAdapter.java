@@ -1,8 +1,10 @@
 package com.example.macstudio.instagramalison.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,10 +32,12 @@ import retrofit2.Response;
 
 public class FeedCursorAdapter extends CursorAdapter {
     private static String access_token = null;
+    private Context context;
     private static final String TAG = FeedCursorAdapter.class.getSimpleName();
 
     public FeedCursorAdapter(Context context, Cursor c) {
         super(context, c, false);
+        this.context = context;
         SharedPreferences sharedPreferences= context.getSharedPreferences(SharedPrefManager.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
         access_token = sharedPreferences.getString("access_token", "");
     }
@@ -47,7 +51,7 @@ public class FeedCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
         final String MEDIA_ID = cursor.getString(cursor.getColumnIndexOrThrow("mediaId"));
-        // put all the layout elements down here?????!!!
+        // put all the layout elements for each media here
         ImageView avatar = view.findViewById(R.id.avatar);
         String avatarUrl = cursor.getString(cursor.getColumnIndexOrThrow("avatar"));
         Picasso.with(context)
@@ -96,6 +100,8 @@ public class FeedCursorAdapter extends CursorAdapter {
                         // user_has_liked == true means user like at the beginning, then unlike -> like
                         int updatedLikeCount = user_has_liked ? likeCount - 1 : likeCount;
                         updateLikeText(updatedLikeCount, like_text);
+                        // update db
+                        updateDb(true, updatedLikeCount, MEDIA_ID);
                     }
 
                     @Override
@@ -119,6 +125,8 @@ public class FeedCursorAdapter extends CursorAdapter {
                         // user_has_liked == true means user doesn't like at the beginning, but then like -> unlike
                         int updatedLikeCount = user_has_liked ? likeCount - 1 : likeCount;
                         updateUnlikeCount(updatedLikeCount, like_text);
+                        // update db
+                        updateDb(false, updatedLikeCount, MEDIA_ID);
                     }
 
                     @Override
@@ -136,7 +144,7 @@ public class FeedCursorAdapter extends CursorAdapter {
 //        likeText.setText(likeTextText);
     }
 
-    public void updateLikeText(int likeCount, TextView like_text) {
+    private void updateLikeText(int likeCount, TextView like_text) {
         if (likeCount == 0) {
             like_text.setText("You like this pic");
         } else if (likeCount == 1) {
@@ -146,7 +154,7 @@ public class FeedCursorAdapter extends CursorAdapter {
         }
     }
 
-    public void updateUnlikeCount(int likeCount, TextView like_text) {
+    private void updateUnlikeCount(int likeCount, TextView like_text) {
         if (likeCount >= 2) {
             like_text.setText(likeCount + " others like this pic");
         }else if (likeCount == 1) {
@@ -154,5 +162,23 @@ public class FeedCursorAdapter extends CursorAdapter {
         } else {
             like_text.setText("");
         }
+    }
+
+    private void updateDb(boolean updatedLikeStatus, int updatedLikeCount, String mediaId) {
+        FeedDbHelper feedDbHelper = new FeedDbHelper(this.context);
+        SQLiteDatabase db = feedDbHelper.getWritableDatabase();
+
+        int likeStatusInt = updatedLikeStatus ? 1 : 0;
+
+        ContentValues values = new ContentValues();
+        values.put(FeedContract.FeedEntry.COLUMN_NAME_LIKESTATUS, likeStatusInt);
+        values.put(FeedContract.FeedEntry.COLUMN_NAME_LIKECOUNT, updatedLikeCount);
+        Log.d(TAG, "values: " + values);
+        db.update(
+                FeedContract.FeedEntry.TABLE_NAME,
+                values,
+                FeedContract.FeedEntry.COLUMN_NAME_MEDIAID + "='" + mediaId + "'",
+                null);
+        Log.d(TAG, "update db called");
     }
 }
