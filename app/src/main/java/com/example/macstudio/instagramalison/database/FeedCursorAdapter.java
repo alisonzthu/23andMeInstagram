@@ -95,13 +95,18 @@ public class FeedCursorAdapter extends CursorAdapter {
                 call.enqueue(new Callback<SelfLikeMediaResponse>() {
                     @Override
                     public void onResponse(Call<SelfLikeMediaResponse> call, Response<SelfLikeMediaResponse> response) {
-                        Log.i(TAG,"POST like successful");
-                        // likeCount is the count before successful POST
-                        // user_has_liked == true means user like at the beginning, then unlike -> like
-                        int updatedLikeCount = user_has_liked ? likeCount - 1 : likeCount;
-                        updateLikeText(updatedLikeCount, like_text);
-                        // update db
-                        updateDb(true, updatedLikeCount, MEDIA_ID);
+                        if (response.isSuccessful()) {
+                            Log.i(TAG,"POST like successful");
+                            // likeCount is the count before successful POST
+                            // user_has_liked == true means user like at the beginning, then unlike -> like
+                            int updatedLikeCount = user_has_liked ? likeCount - 1 : likeCount;
+                            updateLikeText(updatedLikeCount, like_text);
+                            // update db
+                            updateDb(true, updatedLikeCount, MEDIA_ID);
+                        } else {
+                            Log.w(TAG, "POST like not successful");
+                            Toast.makeText(context, "Post like failed!", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -121,12 +126,17 @@ public class FeedCursorAdapter extends CursorAdapter {
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        Log.i(TAG,"DELETE like successful");
-                        // user_has_liked == true means user doesn't like at the beginning, but then like -> unlike
-                        int updatedLikeCount = user_has_liked ? likeCount - 1 : likeCount;
-                        updateUnlikeCount(updatedLikeCount, like_text);
-                        // update db
-                        updateDb(false, updatedLikeCount, MEDIA_ID);
+                        if (response.isSuccessful()) {
+                            Log.i(TAG,"DELETE like successful");
+                            // user_has_liked == true means user doesn't like at the beginning, but then like -> unlike
+                            int updatedLikeCount = user_has_liked ? likeCount - 1 : likeCount;
+                            updateUnlikeCount(updatedLikeCount, like_text);
+                            // update db
+                            updateDb(false, updatedLikeCount, MEDIA_ID);
+                        } else {
+                            Log.w(TAG, "DELETE like not successful");
+                            Toast.makeText(context, "DELETE like failed!", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -138,10 +148,6 @@ public class FeedCursorAdapter extends CursorAdapter {
                 });
             }
         });
-
-//
-//        String likeTextText = cursor.getString(cursor.getColumnIndexOrThrow("likeText"));
-//        likeText.setText(likeTextText);
     }
 
     private void updateLikeText(int likeCount, TextView like_text) {

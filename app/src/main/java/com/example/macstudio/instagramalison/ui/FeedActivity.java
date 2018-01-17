@@ -72,22 +72,29 @@ public class FeedActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call<InstagramResponse> call, Response<InstagramResponse> response) {
-                if (response.body() != null) {
-                    Log.d(TAG, "Received none null Instagram response data");
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        Log.d(TAG, "Received none null Instagram response data");
 
-                    if (response.body().getData().length == 0) {
-                        Toast.makeText(FeedActivity.this, "You don't have any feed", Toast.LENGTH_SHORT).show();
-                        // would be better to show the message on screen
-                    } else {
-                        for (int i = 0; i < response.body().getData().length; i++) {
-                            feedData.add(response.body().getData()[i]);
+                        if (response.body().getData().length == 0) {
+                            Toast.makeText(FeedActivity.this, "You don't have any feed", Toast.LENGTH_SHORT).show();
+                            // would be better to show the message on screen
+                        } else {
+                            for (int i = 0; i < response.body().getData().length; i++) {
+                                feedData.add(response.body().getData()[i]);
+                            }
+                            saveDataToDb(feedData);
                         }
-                        saveDataToDb(feedData);
+                        SQLiteDatabase db = feedDbHelper.getWritableDatabase();
+                        Cursor cursor = db.rawQuery("SELECT * FROM feeds", null);
+                        adapter.changeCursor(cursor);
                     }
-                    SQLiteDatabase db = feedDbHelper.getWritableDatabase();
-                    Cursor cursor = db.rawQuery("SELECT * FROM feeds", null);
-                    adapter.changeCursor(cursor);
+                } else {
+                    // response is not successful (40x case):
+                    Log.w(TAG, "Response not successful");
+                    Toast.makeText(FeedActivity.this, "Response failed!", Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override
