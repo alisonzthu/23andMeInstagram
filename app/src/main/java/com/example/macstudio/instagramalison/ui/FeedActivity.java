@@ -94,7 +94,6 @@ public class FeedActivity extends AppCompatActivity {
                     Log.w(TAG, "Response not successful");
                     Toast.makeText(FeedActivity.this, "Response failed!", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override

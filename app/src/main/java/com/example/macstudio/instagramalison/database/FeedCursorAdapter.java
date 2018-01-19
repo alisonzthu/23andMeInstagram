@@ -90,6 +90,12 @@ public class FeedCursorAdapter extends CursorAdapter {
             @Override
             public void liked(final LikeButton likeButton) {
                 Log.d(TAG, "Making like feed request");
+                // update text right after user clicks button
+                // likeCount is the count before successful POST
+                // user_has_liked == true means user like at the beginning, then unlike -> like
+                final int updatedLikeCount = user_has_liked ? likeCount - 1 : likeCount;
+                final String likeTextOriginal = like_text.getText().toString();
+                updateLikeText(updatedLikeCount, like_text);
                 // POST like
                 Call<SelfLikeMediaResponse> call = ServiceGenerator.createLikeService().postLikeMedia(MEDIA_ID, access_token);
                 call.enqueue(new Callback<SelfLikeMediaResponse>() {
@@ -97,15 +103,12 @@ public class FeedCursorAdapter extends CursorAdapter {
                     public void onResponse(Call<SelfLikeMediaResponse> call, Response<SelfLikeMediaResponse> response) {
                         if (response.isSuccessful()) {
                             Log.i(TAG,"POST like successful");
-                            // likeCount is the count before successful POST
-                            // user_has_liked == true means user like at the beginning, then unlike -> like
-                            int updatedLikeCount = user_has_liked ? likeCount - 1 : likeCount;
-                            updateLikeText(updatedLikeCount, like_text);
                             // update db
                             updateDb(true, updatedLikeCount, MEDIA_ID);
                         } else {
                             Log.w(TAG, "POST like not successful");
                             Toast.makeText(context, "Post like failed!", Toast.LENGTH_SHORT).show();
+                            like_text.setText(likeTextOriginal);
                         }
                     }
 
@@ -114,6 +117,7 @@ public class FeedCursorAdapter extends CursorAdapter {
                         Log.e(TAG, "Post like failed: " + t.getMessage());
                         likeButton.setLiked(false);
                         Toast.makeText(context, "Failed to like", Toast.LENGTH_SHORT).show();
+                        like_text.setText(likeTextOriginal);
                     }
                 });
             }
@@ -121,6 +125,10 @@ public class FeedCursorAdapter extends CursorAdapter {
             @Override
             public void unLiked(final LikeButton likeButton) {
                 Log.i(TAG,"Making unlike feed request");
+                // user_has_liked == true means user doesn't like at the beginning, but then like -> unlike
+                final int updatedLikeCount = user_has_liked ? likeCount - 1 : likeCount;
+                final String likeTextOriginal = like_text.getText().toString();
+                updateUnlikeCount(updatedLikeCount, like_text);
                 // DELETE like
                 Call<Void> call = ServiceGenerator.createLikeService().deleteLikeMedia(MEDIA_ID, access_token);
                 call.enqueue(new Callback<Void>() {
@@ -128,14 +136,12 @@ public class FeedCursorAdapter extends CursorAdapter {
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
                             Log.i(TAG,"DELETE like successful");
-                            // user_has_liked == true means user doesn't like at the beginning, but then like -> unlike
-                            int updatedLikeCount = user_has_liked ? likeCount - 1 : likeCount;
-                            updateUnlikeCount(updatedLikeCount, like_text);
                             // update db
                             updateDb(false, updatedLikeCount, MEDIA_ID);
                         } else {
                             Log.w(TAG, "DELETE like not successful");
                             Toast.makeText(context, "DELETE like failed!", Toast.LENGTH_SHORT).show();
+                            like_text.setText(likeTextOriginal);
                         }
                     }
 
@@ -143,6 +149,7 @@ public class FeedCursorAdapter extends CursorAdapter {
                     public void onFailure(Call<Void> call, Throwable t) {
                         Log.e(TAG,"DELETE like failed: " + t.getMessage());
                         likeButton.setLiked(true);
+                        like_text.setText(likeTextOriginal);
                         Toast.makeText(context, "Failed to unlike", Toast.LENGTH_SHORT).show();
                     }
                 });
