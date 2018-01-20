@@ -29,7 +29,6 @@ public class AuthenticationDialog extends Dialog {
 
     private static final String TAG = AuthenticationDialog.class.getSimpleName();
     private AuthenticationListener authListener;
-    private WebView webView;
 
     private final String url = AppConstants.BASE_URL
             + "oauth/authorize/?client_id=" + AppConstants.CLIENT_ID
@@ -50,7 +49,8 @@ public class AuthenticationDialog extends Dialog {
     }
 
     private void setUpWebView() {
-        webView = findViewById(R.id.web_view);
+
+        WebView webView = findViewById(R.id.web_view);
 
         webView.setWebViewClient(new AuthWebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
@@ -76,7 +76,7 @@ public class AuthenticationDialog extends Dialog {
             // detect if auth_token is there
             SharedPreferences sharedPreferences= getContext().getSharedPreferences(SharedPrefManager.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
             access_token = sharedPreferences.getString(SharedPrefManager.KEY_ACCESS_TOKEN, "");
-            if (access_token != "") {
+            if (access_token != "") { // equals()
                 // this case the user can see feedActivity with DB DATA
                 // access_token is still there so the user is still logged in, should allow the user
                 // to just see her feeds
@@ -84,6 +84,7 @@ public class AuthenticationDialog extends Dialog {
             } else {
                 // user has logged out, can't show any feeds
                 Toast.makeText(getContext(), "Can't show any feed", Toast.LENGTH_SHORT).show();
+                // TO DO: call interface onError() here
             }
         }
 

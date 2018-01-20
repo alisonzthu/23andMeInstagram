@@ -3,4 +3,7 @@
     <string name="connect_to_api_txt">Connect to Instagram</string>
     <string name="feed_title">Your public contents</string>
     <string name="action_settings">Log out</string>
+    <string name="user_alone_like_this_pic">You like this picture</string>
+    <string name="user_and_one_other_like_this_pic">You and 1 other person like this picture</string>
+    <string name="one_other_likes_this_pic">1 other person likes this picture</string>
 </resources>

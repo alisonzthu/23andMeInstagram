@@ -23,7 +23,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements AuthenticationListener{
     private AuthenticationDialog auth_dialog;
-    private Button btn_connect;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        btn_connect = findViewById(R.id.btn_connect);
+        Button btn_connect = findViewById(R.id.btn_connect);
         btn_connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
         // destroy info stored in SharedPreferences:
         if (SharedPrefManager.getInstance(this).isLoggedIn()) {
             Log.d(TAG, "user is still logged in");
-
+            // where to put it in lifecycle methods.
             try{
                 SharedPrefManager.getInstance(this).logout();
             } catch(Exception e) {
@@ -63,17 +62,16 @@ public class MainActivity extends AppCompatActivity implements AuthenticationLis
 
     @Override
     public void onTokenReceived(String access_token) {
-        if (access_token != null) {
+        if (access_token != null && access_token.equals("")) {
             Log.i(TAG, "Received access_token");
-            final String ACCESS_TOKEN = access_token;
             SharedPrefManager.getInstance(getApplicationContext())
-                    .userLogin(ACCESS_TOKEN);
+                    .userLogin(access_token);
             Intent feedIntent = new Intent(MainActivity.this, FeedActivity.class);
             feedIntent.putExtra("Internet", true);
             startActivity(feedIntent);
         } else {
             auth_dialog.dismiss();
-            Log.wtf(TAG, "access_token is null");
+            Log.wtf(TAG, "access_token is null or empty");
             Toast.makeText(MainActivity.this, "Can NOT access API", Toast.LENGTH_LONG).show();
         }
     }

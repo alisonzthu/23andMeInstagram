@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,10 +72,9 @@ public class FeedCursorAdapter extends CursorAdapter {
                 .into(feedImage);
 
         LikeButton likeButton = view.findViewById(R.id.like_button);
-        final boolean user_has_liked = cursor.getInt(cursor.getColumnIndexOrThrow("likeStatus")) == 0 ? false : true;
-
+        // set up the like button status and like text:
+        final boolean user_has_liked = cursor.getInt(cursor.getColumnIndexOrThrow("likeStatus")) != 0;
         final TextView like_text = view.findViewById(R.id.like_text);
-
         final int likeCount = cursor.getInt(cursor.getColumnIndexOrThrow("likeCount"));
 
         if (user_has_liked) {
@@ -85,7 +85,7 @@ public class FeedCursorAdapter extends CursorAdapter {
             likeButton.setLiked(false);
             updateUnlikeCount(likeCount, like_text);
         }
-
+        // set up listener
         likeButton.setOnLikeListener(new OnLikeListener(){
             @Override
             public void liked(final LikeButton likeButton) {
@@ -100,7 +100,7 @@ public class FeedCursorAdapter extends CursorAdapter {
                 Call<SelfLikeMediaResponse> call = ServiceGenerator.createLikeService().postLikeMedia(MEDIA_ID, access_token);
                 call.enqueue(new Callback<SelfLikeMediaResponse>() {
                     @Override
-                    public void onResponse(Call<SelfLikeMediaResponse> call, Response<SelfLikeMediaResponse> response) {
+                    public void onResponse(@NonNull Call<SelfLikeMediaResponse> call, @NonNull Response<SelfLikeMediaResponse> response) {
                         if (response.isSuccessful()) {
                             Log.i(TAG,"POST like successful");
                             // update db
@@ -113,7 +113,7 @@ public class FeedCursorAdapter extends CursorAdapter {
                     }
 
                     @Override
-                    public void onFailure(Call<SelfLikeMediaResponse> call, Throwable t) {
+                    public void onFailure(@NonNull Call<SelfLikeMediaResponse> call, @NonNull Throwable t) {
                         Log.e(TAG, "Post like failed: " + t.getMessage());
                         likeButton.setLiked(false);
                         Toast.makeText(context, "Failed to like", Toast.LENGTH_SHORT).show();
@@ -133,7 +133,7 @@ public class FeedCursorAdapter extends CursorAdapter {
                 Call<Void> call = ServiceGenerator.createLikeService().deleteLikeMedia(MEDIA_ID, access_token);
                 call.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
+                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                         if (response.isSuccessful()) {
                             Log.i(TAG,"DELETE like successful");
                             // update db
@@ -146,7 +146,7 @@ public class FeedCursorAdapter extends CursorAdapter {
                     }
 
                     @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                         Log.e(TAG,"DELETE like failed: " + t.getMessage());
                         likeButton.setLiked(true);
                         like_text.setText(likeTextOriginal);
@@ -159,19 +159,21 @@ public class FeedCursorAdapter extends CursorAdapter {
 
     private void updateLikeText(int likeCount, TextView like_text) {
         if (likeCount == 0) {
-            like_text.setText("You like this pic");
+            like_text.setText(R.string.user_alone_like_this_pic);
         } else if (likeCount == 1) {
-            like_text.setText("You and 1 other person like this pic");
+            like_text.setText(R.string.user_and_one_other_like_this_pic);
         } else {
-            like_text.setText("You and " + likeCount + " others like this pic");
+            String msg = "You and " + likeCount + " others like this picture";
+            like_text.setText(msg);
         }
     }
 
     private void updateUnlikeCount(int likeCount, TextView like_text) {
         if (likeCount >= 2) {
-            like_text.setText(likeCount + " others like this pic");
+            String msg = likeCount + "others like this picture";
+            like_text.setText(msg);
         }else if (likeCount == 1) {
-            like_text.setText("1 person likes this pic");
+            like_text.setText(R.string.one_other_likes_this_pic);
         } else {
             like_text.setText("");
         }
