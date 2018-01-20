@@ -3,10 +3,10 @@ package com.example.macstudio.instagramalison.api.services;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.webkit.CookieManager;
-import android.webkit.ValueCallback;
+
+import com.example.macstudio.instagramalison.database.FeedContract;
 
 
 /**
@@ -17,11 +17,11 @@ public class SharedPrefManager {
 
     private static SharedPrefManager managerInstance;
     private static final String TAG = SharedPrefManager.class.getSimpleName();
-    private static Context context;
+    private Context context;
     public static final String SHARED_PREFERENCE_NAME = "myPref1";
     public static final String KEY_ACCESS_TOKEN = "access_token";
 
-    public SharedPrefManager(Context context) {
+    private SharedPrefManager(Context context) {
         this.context = context;
     }
 
@@ -46,10 +46,7 @@ public class SharedPrefManager {
 
     public boolean isLoggedIn() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
-        if (sharedPreferences.getString(KEY_ACCESS_TOKEN, null) != null) {
-            return true;
-        }
-        return false;
+        return sharedPreferences.getString(KEY_ACCESS_TOKEN, null) != null;
     }
 
     public boolean logout() {
@@ -62,6 +59,9 @@ public class SharedPrefManager {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             CookieManager.getInstance().removeAllCookies(null);
         }
+        // drop db
+        context.deleteDatabase(FeedContract.DB_NAME);
+
         Log.i(TAG,"User successfully logged out");
         return true;
     }
